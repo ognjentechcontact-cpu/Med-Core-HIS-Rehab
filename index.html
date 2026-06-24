@@ -501,4 +501,618 @@
                 pratIme: document.getElementById('p-prat-ime').value.trim() || "",
                 pratPrezime: document.getElementById('p-prat-prezime').value.trim() || "",
                 pratSrodstvo: document.getElementById('p-prat-srodstvo').value.trim() || "",
-                pratJmbg: document.getElementById('p-prat-j
+                pratJmbg: document.getElementById('p-prat-jmbg').value.trim() || "",
+                pratPotvrda: document.getElementById('p-prat-potvrda').value,
+
+                // Službe
+                uputLekar: document.getElementById('p-uput-lekar').value,
+                uputHitnost: document.getElementById('p-uput-hitnost').value,
+                globalStatus: "Zaveden na Pultu",
+
+                // Konsultant polje
+                konsSpecijalnost: "Nema upućivanja",
+                konsRazlog: "",
+
+                // Lekar nalazi
+                tipPosete: "Prvi specijalistički pregled", dgKod: "", anamneza: "", lokalni: "", rom: "", mmt: "", refleksi: "", antropometrija: "",
+                planTerapija: [],
+                matricaPrisustva: {},
+
+                // Finansije
+                bModelFond: "RFZO", bTrosakSmestaj: 0, bTrosakPregledi: 0, bPlaceno: false,
+
+                // Otpust
+                oIshod: "Izlečen (Sanatio completa)", oZavrsniStatus: "", oPreporuka: ""
+            };
+
+            bolnicaDB.push(noviPacijent);
+            dbCommit();
+            activePatientId = noviPacijent.id;
+            document.getElementById('form-pult-registracija').reset();
+            alert("Pacijent uspešno protokoliran. Karton je otvoren.");
+            routeTo('lekar');
+        }
+
+        // RENDER SIDEBAR LISTA
+        function renderujProtokolListu() {
+            const container = document.getElementById('dom-patient-flow-list');
+            container.innerHTML = "";
+            
+            if (bolnicaDB.length === 0) {
+                container.innerHTML = `<p style="font-size:11px; color:var(--text-muted); padding:10px;">Centralni protokol je prazan.</p>`;
+                return;
+            }
+
+            bolnicaDB.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `flow-card ${p.id === activePatientId ? 'selected' : ''}`;
+                card.onclick = () => { activePatientId = p.id; renderujProtokolListu(); osveziPacijentFokus(); loadPatientDataToInputs(); };
+
+                let barBoja = "var(--hospital-blue)";
+                if(p.globalStatus === "Lekarski Obrađen") barBoja = "#9333ea";
+                if(p.globalStatus === "Terapije u Toku") barBoja = "var(--accent-warn)";
+                if(p.globalStatus === "Arhiviran / Otpušten") barBoja = "var(--accent-success)";
+
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="color:var(--text-dark); font-size:12px;">${p.ime} ${p.prezime}</strong>
+                        <span style="cursor:pointer; font-size:11px;" onclick="obrisiPacijenta(event, '${p.id}')">🗑️</span>
+                    </div>
+                    <div class="meta-line">
+                        <span>ID: ${p.id} [${p.kategorija}]</span>
+                        <span class="status-pill" style="background:${barBoja}; color:white;">${p.globalStatus}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function obrisiPacijenta(e, id) {
+            e.stopPropagation();
+            if(confirm("Potpunim brisanjem brišete istoriju bolesti pacijenta i sve nalaze! Nastaviti?")) {
+                bolnicaDB = bolnicaDB.filter(x => x.id !== id);
+                if(activePatientId === id) activePatientId = null;
+                dbCommit();
+                routeTo(currentActiveModule);
+            }
+        }
+
+        function filtrirajPacijente() {
+            const query = document.getElementById('system-search-input').value.toLowerCase();
+            document.querySelectorAll('.flow-card').forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // CONTROL PANEL FOR PATIENT CONTEXT
+        function osveziPacijentFokus() {
+            const bar = document.getElementById('global-focus-bar');
+            const hub = document.getElementById('printing-hub-zone');
+            
+            if (!activePatientId) {
+                bar.style.display = "none";
+                hub.style.display = "none";
+                return;
+            }
+            
+            bar.style.display = "flex";
+            hub.style.display = "flex";
+            
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            document.getElementById('focus-patient-name').innerText = `🏥 [KARTON: ${p.id}] - Pacijent: ${p.ime} ${p.prezime}`;
+            
+            let pratInfo = p.kategorija === "Maloletni" ? ` | Pratilac: ${p.pratIme} ${p.pratPrezime} (${p.pratSrodstvo})` : " | Punoletan bolesnik";
+            document.getElementById('focus-patient-meta').innerText = `Režim smeštaja: ${p.smestaj} | Dijeta: ${p.kuhDijeta} | Soba: ${p.kuhSoba} ${pratInfo}`;
+        }
+
+        // LOAD DATA IN CONTEXT INPUT FIELDS
+        function loadPatientDataToInputs() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if (!p) return;
+
+            // Lekar učitavanje
+            document.getElementById('l-tip-posete').value = p.tipPosete || "Prvi specijalistički pregled";
+            document.getElementById('l-dg-kod').value = p.dgKod || "";
+            document.getElementById('l-anamneza').value = p.anamneza || "";
+            document.getElementById('l-lokalni').value = p.lokalni || "";
+            document.getElementById('l-rom').value = p.rom || "";
+            document.getElementById('l-mmt').value = p.mmt || "";
+            document.getElementById('l-refleksi').value = p.refleksi || "";
+            document.getElementById('l-antropometrija').value = p.antropometrija || "";
+            document.getElementById('l-kons-specijalnost').value = p.konsSpecijalnost || "Nema upućivanja";
+            document.getElementById('l-kons-razlog').value = p.konsRazlog || "";
+            renderujLekarskuTabeluPlana(p);
+
+            // Terapeut učitavanje
+            renderujTerapeutskuTabeluPrisustva(p);
+
+            // Blagajna učitavanje
+            document.getElementById('b-model-fond').value = p.bModelFond || "RFZO";
+            document.getElementById('b-trosak-smestaj').value = p.bTrosakSmestaj || 0;
+            document.getElementById('b-trosak-pregledi').value = p.bTrosakPregledi || 0;
+            preracunajFiskalniMeni();
+
+            // Otpust učitavanje
+            document.getElementById('o-ishod').value = p.oIshod || "Izlečen (Sanatio completa)";
+            document.getElementById('o-zavrsni-status').value = p.oZavrsniStatus || "";
+            document.getElementById('o-preporuka').value = p.oPreporuka || "";
+        }
+
+        // LEKAR PLAN PROCEDURA MANAGEMENT
+        function lekarDodajTerapijuUPlan() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if (!p) return alert("Niste selektovali pacijenta!");
+
+            const naziv = document.getElementById('l-plan-naziv').value;
+            const seanse = parseInt(document.getElementById('l-plan-seanse').value) || 10;
+
+            if (p.planTerapija.some(x => x.naziv === naziv)) return alert("Procedura se već nalazi u planu lečenja.");
+
+            p.planTerapija.push({ naziv: naziv, seanse: seanse });
+            p.matricaPrisustva[naziv] = Array(seanse).fill("empty");
+            renderujLekarskuTabeluPlana(p);
+        }
+
+        function renderujLekarskuTabeluPlana(p) {
+            const tbody = document.querySelector('#table-lekar-trenutni-plan tbody');
+            tbody.innerHTML = "";
+            p.planTerapija.forEach((t, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td><strong>${t.naziv}</strong></td><td>${t.seanse} radnih dana</td><td><button class="btn btn-danger" style="padding:2px 6px; font-size:10px;" onclick="ukloniTerapijuIzPlana(${index})">Ukloni</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function ukloniTerapijuIzPlana(index) {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if(p) {
+                delete p.matricaPrisustva[p.planTerapija[index].naziv];
+                p.planTerapija.splice(index, 1);
+                renderujLekarskuTabeluPlana(p);
+            }
+        }
+
+        function sacuvajMedicinskiNalazFizijatra() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if (!p) return alert("Greška: Selekcija pacijenta nepostojana.");
+
+            p.tipPosete = document.getElementById('l-tip-posete').value;
+            p.dgKod = document.getElementById('l-dg-kod').value.trim();
+            p.anamneza = document.getElementById('l-anamneza').value.trim();
+            p.lokalni = document.getElementById('l-lokalni').value.trim();
+            p.rom = document.getElementById('l-rom').value.trim();
+            p.mmt = document.getElementById('l-mmt').value.trim();
+            p.refleksi = document.getElementById('l-refleksi').value.trim();
+            p.antropometrija = document.getElementById('l-antropometrija').value.trim();
+            p.konsSpecijalnost = document.getElementById('l-kons-specijalnost').value;
+            p.konsRazlog = document.getElementById('l-kons-razlog').value.trim();
+
+            p.globalStatus = "Lekarski Obrađen";
+            dbCommit();
+            renderujProtokolListu();
+            alert("Lekarski izveštaj je uspešno digitalno potpisan i sačuvan u zdravstveni karton.");
+        }
+
+        // TERAPEUT SPROVOĐENJE MATRICA ENGINE
+        function renderujTerapeutskuTabelu(p) { renderujTerapeutskuTabeluPrisustva(p); }
+        function renderujTerapeutskuTabeluPrisustva(p) {
+            const tbody = document.querySelector('#table-terapeut-evidencija tbody');
+            tbody.innerHTML = "";
+
+            if (p.planTerapija.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:15px;">Pacijent nema aktivnih propisanih balneo-fizikalnih procedura.</td></tr>`;
+                return;
+            }
+
+            p.planTerapija.forEach(t => {
+                const tr = document.createElement('tr');
+                let matricaHtml = `<div class="attendance-matrix">`;
+                const statusiSeansi = p.matricaPrisustva[t.naziv] || Array(t.seanse).fill("empty");
+
+                let odradjenoBroj = 0;
+
+                for (let d = 0; d < t.seanse; d++) {
+                    const st = statusiSeansi[d] || "empty";
+                    let klasaIndikatora = "";
+                    if (st === "done") { klasaIndikatora = "done"; odradjenoBroj++; }
+                    if (st === "excused") klasaIndikatora = "excused";
+                    if (st === "unexcused") klasaIndikatora = "unexcused";
+
+                    matricaHtml += `
+                        <div class="day-node">
+                            <span>Dan ${d+1}</span>
+                            <div class="state-indicator ${klasaIndikatora}"></div>
+                            <div class="btn-group-states">
+                                <button title="Sprovedeno" class="btn-state" style="background:var(--accent-success); color:#fff;" onclick="promeniTerapijskiStatus('${p.id}', '${t.naziv}', ${d}, 'done')">✓</button>
+                                <button title="Opravdano" class="btn-state" style="background:var(--accent-warn); color:#fff;" onclick="promeniTerapijskiStatus('${p.id}', '${t.naziv}', ${d}, 'excused')">O</button>
+                                <button title="Neopravdano" class="btn-state" style="background:var(--accent-danger); color:#fff;" onclick="promeniTerapijskiStatus('${p.id}', '${t.naziv}', ${d}, 'unexcused')">X</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                matricaHtml += `</div>`;
+
+                tr.innerHTML = `
+                    <td style="width:220px; font-weight:600; color:var(--hospital-blue);">${t.naziv}</td>
+                    <td>${matricaHtml}</td>
+                    <td style="text-align:center; font-size:13px; font-weight:bold; width:100px;"><span style="color:var(--accent-success);">${odradjenoBroj}</span> / ${t.seanse}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function promeniTerapijskiStatus(pid, tNaziv, danIdx, noviStatus) {
+            const p = bolnicaDB.find(x => x.id === pid);
+            if(p && p.matricaPrisustva[tNaziv]) {
+                p.matricaPrisustva[tNaziv][danIdx] = noviStatus;
+                p.globalStatus = "Terapije u Toku";
+                dbCommit();
+                renderujTerapeutskuTabeluPrisustva(p);
+            }
+        }
+
+        // BLAGAJNA FINANSIJSKI MODUL
+        function preracunajFiskalniMeni() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if (!p) return;
+
+            const model = document.getElementById('b-model-fond').value;
+            const extraSmestaj = parseFloat(document.getElementById('b-trosak-smestaj').value) || 0;
+            const extraPregledi = parseFloat(document.getElementById('b-trosak-pregledi').value) || 0;
+
+            const tbody = document.querySelector('#table-blagajna-obracun tbody');
+            tbody.innerHTML = "";
+
+            let totalZbir = 0;
+            let stavkeFakture = [];
+
+            // Evaluacija izvršenih kura
+            p.planTerapija.forEach(t => {
+                const sprovedenoDana = (p.matricaPrisustva[t.naziv] || []).filter(s => s === 'done').length;
+                if(sprovedenoDana > 0) {
+                    let cenaJedinicna = CENOVNIK_HIS.Terapija;
+                    let ucesceTekst = "0.00 RSD (Fond)";
+                    let iznosStavke = 0;
+
+                    if(model === "Privatno") {
+                        cenaJedinicna = CENOVNIK_HIS.Terapija;
+                        iznosStavke = cenaJedinicna * sprovedenoDana;
+                        ucesceTekst = "100% Komercijalno";
+                    } else if(model === "Participacija") {
+                        cenaJedinicna = CENOVNIK_HIS.Terapija;
+                        iznosStavke = (cenaJedinicna * 0.10) * sprovedenoDana; // 10% učešće pacijenta
+                        ucesceTekst = "10% Participacija";
+                    }
+
+                    stavkeFakture.push({ naziv: `Sprovedeno: ${t.naziv}`, q: sprovedenoDana, jc: cenaJedinicna, porez: ucesceTekst, sub: iznosStavke });
+                }
+            });
+
+            // Lekarska osnovica
+            let cenaPreg = CENOVNIK_HIS.Pregled;
+            let porezPreg = "0.00 RSD (Fond)";
+            let subPreg = 0;
+            if(model === "Privatno") { subPreg = cenaPreg; porezPreg = "Komercijalno"; }
+            if(model === "Participacija") { subPreg = cenaPreg * 0.10; porezPreg = "10% Part."; }
+            stavkeFakture.push({ naziv: `Lekarska obrada i evaluacija (${p.tipPosete})`, q: 1, jc: cenaPreg, porez: porezPreg, sub: subPreg });
+
+            // Ekstra administrativni unosi
+            if(extraSmestaj > 0) stavkeFakture.push({ naziv: "Bolnička nega i ležaj u stacionarnom bloku", q: 1, jc: extraSmestaj, porez: "Doplata", sub: extraSmestaj });
+            if(extraPregledi > 0) stavkeFakture.push({ naziv: "Vanredne dijagnostičke procedure i kabineti", q: 1, jc: extraPregledi, porez: "Doplata", sub: extraPregledi });
+
+            stavkeFakture.forEach(s => {
+                totalZbir += s.sub;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${s.naziv}</td><td>${s.q}</td><td>${s.jc.toFixed(2)}</td><td>${s.porez}</td><td><strong>${s.sub.toFixed(2)}</strong></td>`;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('b-faktura-total').innerText = totalZbir.toFixed(2);
+        }
+
+        function proknjiziFinansijskuUplatu() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if(!p) return;
+
+            p.bModelFond = document.getElementById('b-model-fond').value;
+            p.bTrosakSmestaj = parseFloat(document.getElementById('b-trosak-smestaj').value) || 0;
+            p.bTrosakPregledi = parseFloat(document.getElementById('b-trosak-pregledi').value) || 0;
+            p.bPlaceno = true;
+
+            dbCommit();
+            alert("Uplata je registrovana i proknjižena. Generisan je fiskalni isečak.");
+        }
+
+        // ZAKLJUČIVANJE I OTPUST
+        function arhivirajIZakljucajIstorijuBolesti() {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if(!p) return;
+
+            p.oIshod = document.getElementById('o-ishod').value;
+            p.oZavrsniStatus = document.getElementById('o-zavrsni-status').value.trim();
+            p.oPreporuka = document.getElementById('o-preporuka').value.trim();
+            p.globalStatus = "Arhiviran / Otpušten";
+
+            dbCommit();
+            renderujProtokolListu();
+            osveziPacijentFokus();
+            alert("Istorija bolesti je zvanično zaključana u Centralnoj Arhivi bolnice.");
+        }
+
+        // REVOLUCIONARNI ENGINE ZA PROFESIONALNU A4 ŠTAMPU I FISKALIZACIJU
+        function izvrsiZvanicnuA4Stampu(tipDokumenta) {
+            const p = bolnicaDB.find(x => x.id === activePatientId);
+            if (!p) return alert("Selektujte pacijenta iz matične knjige!");
+
+            const printBuffer = document.getElementById('print-engine-output');
+            printBuffer.innerHTML = "";
+
+            const page = document.createElement('div');
+            page.className = "a4-page";
+
+            // Standardizovano memorandum zaglavlje ustanove
+            let memorandumHtml = `
+                <div class="a4-header">
+                    <div class="a4-hospital-info">
+                        SPECIJALNA BOLNICA ZA FIZIKALNU MEDICINU I REHABILITACIJU ZAVOD ARANĐELOVAC<br>
+                        Služba za medicinsku rehabilitaciju i sudsko-medicinsku dokumentaciju<br>
+                        Knjiga Protokola br: ${p.id} | PIB: 102394811 | Tel: 034/711-200
+                    </div>
+                    <div style="text-align:right; font-size:11px;">
+                        <strong>Sistem: MedCore HIS Enterprise</strong><br>
+                        Tekući datum: 24.06.2026.<br>
+                        Vreme štampe: 09:14h
+                    </div>
+                </div>
+            `;
+
+            // Striktan okvir za opšte podatke pacijenta i pratioca
+            let pacijentOkvirHtml = `
+                <div class="a4-patient-sticker">
+                    <div><strong>Pacijent (Ime i Prezime):</strong> ${p.ime} ${p.prezime}</div>
+                    <div><strong>Jedinstveni ID Protokola:</strong> ${p.id}</div>
+                    <div><strong>JMBG Pacijenta:</strong> ${p.jmbg}</div>
+                    <div><strong>Hospitalni Status:</strong> ${p.smestaj} (Soba: ${p.kuhSoba})</div>
+                    ${p.kategorija === "Maloletni" ? `
+                    <div><strong>Pratilac / Pravni Zastupnik:</strong> ${p.pratIme} ${p.pratPrezime}</div>
+                    <div><strong>Srodstvo i JMBG pratioca:</strong> ${p.pratSrodstvo} - JMBG: ${p.pratJmbg}</div>
+                    ` : `
+                    <div style="grid-column: span 2; color:#555;"><strong>Starosni status:</strong> Lice je punoletno, leči se bez pratioca.</div>
+                    `}
+                </div>
+            `;
+
+            // Zakonski tekst o pravima pacijenata koji ide na dno svakog A4 dokumenta
+            let zakonskiFusnotTekst = `
+                <div class="a4-footer">
+                    <div class="zakonski-tekst">
+                        <strong>Pouka o pravnom leku (Član 39. Zakona o pravima pacijenata Republike Srbije):</strong> Ukoliko pacijent, odnosno njegov zakonski zastupnik ili pratilac, smatra da mu je uskraćeno pravo na zdravstvenu zaštitu ili da mu je postupkom medicinskog osoblja povređeno dostojanstvo ili pravo, može podneti prigovor Savetniku za zaštitu prava pacijenata u roku od 15 dana od dana izdavanja ovog izveštaja. Ovaj dokument je validan bez pečata ako je generisan elektronskim putem unutar HIS mreže ustanove.
+                    </div>
+                    <div class="potpisi-zona">
+                        <div style="font-size:11px; text-align:left;">M.P.<br>(Pečat Specijalne Bolnice)</div>
+                        <div class="a4-signature-box">
+                            <div class="a4-line">dr Ognjen Filipović, spec. fizijatar</div>
+                            <span style="font-size:10px; color:#444;">Faksimil i potpis lekara</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (tipDokumenta === 'pult') {
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Prijemni list i nalog za bolnički restoran (Kuhinjska karta)</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section">
+                        <h3>1. Administrativni i trijažni podaci</h3>
+                        <p>Pacijent je primljen preko šaltera sa stepenom hitnosti: <strong>${p.uputHitnost}</strong> i elektronski prosleđen na: <strong>${p.uputLekar}</strong>.</p>
+                        <p>Uputna dijagnoza pod kojom se vodi u protokolu: <strong>${p.uputnaDg || 'Nema šifre'}</strong>.</p>
+                    </div>
+                    <div class="a4-section">
+                        <h3>2. Režim ishrane (Bolnički restoranski blok)</h3>
+                        <p>Na osnovu kliničkih indikacija, pacijentu se dodeljuje sledeći režim u stacionaru:</p>
+                        <table class="a4-table">
+                            <tr><th>Parametar ishrane</th><th>Propisana vrednost i upozorenja</th></tr>
+                            <tr><td><strong>Medicinska Dijeta:</strong></td><td><strong>${p.kuhDijeta}</strong></td></tr>
+                            <tr><td><strong>Alergije i kontraindikacije:</strong></td><td><strong style="color:red;">${p.kuhAlergije}</strong></td></tr>
+                        </table>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+            else if (tipDokumenta === 'pratilac') {
+                if (p.kategorija !== "Maloletni") return alert("Ovaj pacijent nema status maloletnog lica i nema registrovanog pratioca!");
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Zvanični izveštaj o opravdanosti prisustva pratioca uz bolesnika</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section">
+                        <h3>Potvrda o bolničkom odsustvu</h3>
+                        <p>Kojom se potvrđuje da je gore imenovani pratilac <strong>${p.pratIme} ${p.pratPrezime}</strong> u srodstvu kao <strong>${p.pratSrodstvo}</strong> neophodan radi pratnje, nege i psihofizičke podrške maloletnom pacijentu tokom trajanja rehabilitacionog ciklusa.</p>
+                        <p>Izveštaj se izdaje u svrhu regulisanja prava na bolovanje, privremenu sprečenost za rad ili opravdanje odsustva iz obrazovnih/radnih ustanova, a na osnovu člana Zakona o zdravstvenom osiguranju.</p>
+                        <p>Period važenja potvrde se poklapa sa trajanjem medicinskog tretmana u našem stacionarnom/ambulantnom bloku.</p>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+            else if (tipDokumenta === 'lekar') {
+                let rowsHtml = "";
+                p.planTerapija.forEach(x => { rowsHtml += `<tr><td><strong>${x.naziv}</strong></td><td>${x.seanse} seansi</td></tr>`; });
+
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Izveštaj lekara specijaliste - ${p.tipPosete}</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section"><h3>Anamneza i istorija bolesti</h3><p>${p.anamneza || 'Nema unetih anamnestičkih podataka.'}</p></div>
+                    <div class="a4-section"><h3>Objektivan fizijatrijski nalaz (Klinički status)</h3><p>${p.lokalni || 'Nema unetih podataka o lokalnom nalazu.'}</p></div>
+                    <div class="a4-section"><h3>Funkcionalni Lokomotorni Status</h3>
+                        <p><strong>Obim pokreta u zglobovima (ROM):</strong> ${p.rom || '/'}</p>
+                        <p><strong>Manuelni mišićni test (MMT):</strong> ${p.mmt || '/'}</p>
+                        <p><strong>Refleksologija i antropometrijska merenja:</strong> Refleksi: ${p.refleksi || '/'} | Obimi: ${p.antropometrija || '/'}</p>
+                    </div>
+                    <div class="a4-section"><h3>Ustanovljena Klinička Dijagnoza</h3><p style="font-size:14px; font-weight:bold;">MKB-10 Kodifikacija: ${p.dgKod || 'Nije definisana'}</p></div>
+                    <div class="a4-section"><h3>Propisan balneo-fizikalni program</h3>
+                        <table class="a4-table">
+                            <thead><tr><th>Naziv fizikalne procedure / terapije</th><th>Planirano trajanje (Dana)</th></tr></thead>
+                            <tbody>${rowsHtml || '<tr><td colspan="2">Nema propisanih terapija u planu.</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+            else if (tipDokumenta === 'konsultant') {
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Uputnica za specijalističko-konsultativni pregled</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section">
+                        <h3>Služba konzilijarnog upućivanja</h3>
+                        <p>Uputni lekar vrši elektronsko i pismeno upućivanje pacijenta kod eksternog / internog konsultanta:</p>
+                        <div style="border: 2px solid #000; padding:12px; margin:10px 0; font-size:14px;">
+                            <strong>Uputni konsultant: ${p.konsSpecijalnost}</strong>
+                        </div>
+                        <p><strong>Razlog upućivanja i kliničko pitanje konsultantu:</strong></p>
+                        <p style="font-style:italic; text-indent:15px;">"${p.konsRazlog || 'Molim evaluaciju i mišljenje o tekućem kliničkom statusu pacijenta.'}"</p>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+            else if (tipDokumenta === 'terapeut') {
+                let rowsHtml = "";
+                p.planTerapija.forEach(t => {
+                    let m = p.matricaPrisustva[t.naziv] || [];
+                    let sprov = m.filter(x => x === 'done').length;
+                    let dnevnik = m.map((x, i) => `D${i+1}:${x === 'done' ? '✓' : x === 'excused' ? 'O' : x === 'unexcused' ? 'X' : '/'}`).join(" ");
+                    rowsHtml += `<tr><td><strong>${t.naziv}</strong></td><td style="font-size:10px;">${dnevnik}</td><td><strong>${sprov} / ${t.seanse}</strong></td></tr>`;
+                });
+
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Terapeutski list i kontrola seansi fizikalnog bloka</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section">
+                        <table class="a4-table">
+                            <thead><tr><th>Procedura</th><th>Dnevnik realizacije po radnim danima</th><th>Izvršeno</th></tr></thead>
+                            <tbody>${rowsHtml}</tbody>
+                        </table>
+                        <p style="font-size:10px; color:#444; margin-top:10px;">Legenda: ✓ - Terapija uspešno sprovedena | O - Opravdano bolesnik bio odsutan | X - Neopravdan izostanak sa kure.</p>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+            else if (tipDokumenta === 'fiskalni') {
+                // AUTENTIČNI PORESKI FISKALNI RAČUN
+                const fIsecak = document.createElement('div');
+                fIsecak.className = "fiskalni-traka";
+
+                let stavkeTekst = "";
+                let totalSuma = 0;
+
+                p.planTerapija.forEach(t => {
+                    let sprov = (p.matricaPrisustva[t.naziv] || []).filter(x => x === 'done').length;
+                    if(sprov > 0) {
+                        let jc = p.bModelFond === "RFZO" ? 0 : p.bModelFond === "Participacija" ? CENOVNIK_HIS.Terapija * 0.10 : CENOVNIK_HIS.Terapija;
+                        let sub = sprov * jc; totalSuma += sub;
+                        stavkeTekst += `<div class="poravnato"><span>${t.naziv.substring(0,22)}</span></div>`;
+                        stavkeTekst += `<div class="poravnato"><span>  ${sprov} x ${jc.toFixed(2)}</span><span>${sub.toFixed(2)} Ђ</span></div>`;
+                    }
+                });
+
+                let cPreg = p.bModelFond === "RFZO" ? 0 : p.bModelFond === "Participacija" ? CENOVNIK_HIS.Pregled * 0.10 : CENOVNIK_HIS.Pregled;
+                totalSuma += cPreg;
+                stavkeTekst += `<div class="poravnato"><span>Pregled spec. fizijatra</span></div>`;
+                stavkeTekst += `<div class="poravnato"><span>  1 x ${cPreg.toFixed(2)}</span><span>${cPreg.toFixed(2)} Ђ</span></div>`;
+
+                if(p.bTrosakSmestaj > 0) { totalSuma += p.bTrosakSmestaj; stavkeTekst += `<div class="poravnato"><span>Doplata stacionara</span><span>${p.bTrosakSmestaj.toFixed(2)} Ђ</span></div>`; }
+                if(p.bTrosakPregledi > 0) { totalSuma += p.bTrosakPregledi; stavkeTekst += `<div class="poravnato"><span>Vanredne usluge</span><span>${p.bTrosakPregledi.toFixed(2)} Ђ</span></div>`; }
+
+                let pbfm = Math.floor(100000 + Math.random() * 900000);
+
+                fIsecak.innerHTML = `
+                    <div class="centar">SPECIJALNA BOLNICA ARANĐELOVAC</div>
+                    <div class="centar">ZAVOD ZA REHABILITACIJU</div>
+                    <div class="centar">PIB: 102394811</div>
+                    <div class="centar">IBFM: AM${pbfm}</div>
+                    <div class="linija"></div>
+                    <div class="centar">FISKALNI RAČUN</div>
+                    <div class="linija"></div>
+                    ${stavkeTekst}
+                    <div class="linija"></div>
+                    <div class="poravnato" style="font-weight:bold; font-size:12px;"><span>UKUPNO:</span><span>${totalSuma.toFixed(2)} RSD</span></div>
+                    <div class="poravnato"><span>GOTOVINA / KARTICA:</span><span>${totalSuma.toFixed(2)}</span></div>
+                    <div class="linija"></div>
+                    <div class="poravnato"><span>Stopa Ђ (Porez/Part):</span><span>10.00%</span></div>
+                    <div class="linija"></div>
+                    <div>Broj računa: ${p.id}-2026</div>
+                    <div>Datum: 24.06.2026. 09:14:13</div>
+                    <div class="linija"></div>
+                    <div class="centar">[ SIMULACIJA PORESKOG QR KODA ]</div>
+                    <div class="centar">HVALA NA POVERENJU</div>
+                `;
+                printBuffer.appendChild(fIsecak);
+                window.print();
+                return;
+            }
+            else if (tipDokumenta === 'komplet') {
+                let listaUraHtml = "";
+                p.planTerapija.forEach(t => {
+                    let odr = (p.matricaPrisustva[t.naziv] || []).filter(x => x === 'done').length;
+                    listaUraHtml += `<li>${t.naziv} - sprovedeno ukupno <strong>${odr} od ${t.seanse}</strong> planiranih seansi u fizikalnom bloku ustanove.</li>`;
+                });
+
+                page.innerHTML = memorandumHtml + `<div class="a4-doc-title">Zvanična otpusna lista i klinički protokol rehabilitacije</div>` + pacijentOkvirHtml + `
+                    <div class="a4-section">
+                        <h3>1. Istorija bolesti i dijagnostički status na prijemu</h3>
+                        <p><strong>Inicijalna dijagnoza lečenja (MKB-10):</strong> ${p.dgKod || '/'}</p>
+                        <p><strong>Prijemni lokomotorni status:</strong> Anamneza: ${p.anamneza || '/'} | Lokalni status: ${p.lokalni || '/'}</p>
+                    </div>
+                    <div class="a4-section">
+                        <h3>2. Sprovođenje balneo-fizikalnog programa</h3>
+                        <ul>${listaUraHtml || 'Nema realizovanih fizikalnih kura.'}</ul>
+                    </div>
+                    <div class="a4-section">
+                        <h3>3. Evaluacija rehabilitacionog ciklusa na otpustu pacijenta</h3>
+                        <p><strong>Završna ocena lečenja i ishod:</strong> <strong>${p.oIshod}</strong>.</p>
+                        <p><strong>Objektivan završni status lokomocije (ROM / MMT):</strong> ${p.oZavrsniStatus || 'Uredan napredak bez restrikcija pokreta.'}</p>
+                        <p><strong>Preporuka za kućne uslove i medicinsku gimnastiku:</strong></p>
+                        <p style="font-style:italic; text-indent:15px;">"${p.oPreporuka || 'Nastaviti naučene vežbe i izbegavati preopterećenje lokomotornog aparata.'}"</p>
+                    </div>
+                ` + zakonskiFusnotTekst;
+            }
+
+            printBuffer.appendChild(page);
+            window.print();
+        }
+
+        // AUTO-INJEKTOR DEMO PODATAKA ZA PROFESIONALNU EVALUACIJU SISTEMA
+        function učitajKompletneDemoPacijente() {
+            bolnicaDB = [
+                {
+                    id: "M-2026/105", ime: "Marko", prezime: "Jovanović", jmbg: "1508015710042", kategorija: "Maloletni", smestaj: "Stacionarno", uputnaDg: "M41 Scoliosis implicata",
+                    kuhSoba: "Dečije odeljenje, Soba 4", kuhDijeta: "Standardni bolnički meni", kuhAlergije: "Alergija na kikiriki",
+                    pratIme: "Jelena", pratPrezime: "Jovanović", pratSrodstvo: "Majka", pratJmbg: "2210992715024", pratPotvrda: "Da",
+                    uputLekar: "Kabinet Ambulanta 1 - Prvi pregled fizijatra", uputHitnost: "Redovan elektivni prijem", globalStatus: "Arhiviran / Otpušten",
+                    tipPosete: "Prvi specijalistički pregled", dgKod: "M41.2 Scoliosis idiopathica", anamneza: "Majka navodi da je primetila asimetriju lopatica kod deteta pre dva meseca. Dete se žali na zamor pri dužem sedenju u školi.",
+                    lokalni: "Desnostrana torakalna skolioza, gibus prisutan pri pretklonu. Desno rame podignuto za 1.5 cm.", rom: "Pokretljivost kičmenog stuba umereno ograničena pri bočnoj fleksiji ulevo.", mmt: "Paravertebralna muskulatura asimetrične snage.", refleksi: "Uredna neurološka slika.", antropometrija: "Asimetrija visine krista ilijaka.",
+                    konsSpecijalnost: "Specijalista Ortopedski Hirurg", konsRazlog: "Molim mišljenje ortopeda o potrebi za nošenjem midera.",
+                    planTerapija: [
+                        { naziv: "Kineziterapija (Individualni korektivni tretman)", seanse: 10 },
+                        { naziv: "Elektroterapija (Interferentne struje IFS)", seanse: 10 }
+                    ],
+                    matricaPrisustva: {
+                        "Kineziterapija (Individualni korektivni tretman)": ["done", "done", "done", "done", "done", "done", "done", "done", "done", "done"],
+                        "Elektroterapija (Interferentne struje IFS)": ["done", "done", "done", "done", "excused", "done", "done", "done", "done", "done"]
+                    },
+                    bModelFond: "Participacija", bTrosakSmestaj: 4500, bTrosakPregledi: 0, bPlaceno: true,
+                    oIshod: "Značajno poboljšanje funkcionalnog statusa", oZavrsniStatus: "Uspostavljen bolji balans trupa, ojačana muskulatura leđa.", oPreporuka: "Obavezno nastaviti korektivne vežbe po Šrot metodi u kućnim uslovima. Kontrola ortopeda za 3 meseca."
+                },
+                {
+                    id: "A-2026/894", ime: "Nikola", prezime: "Radić", jmbg: "0403981710011", kategorija: "Punoletni", smestaj: "Ambulantno", uputnaDg: "M54.5 Lumbalgia",
+                    kuhSoba: "Nije dodeljen ležaj", kuhDijeta: "Standardni bolnički meni", kuhAlergije: "Nema",
+                    pratIme: "", pratPrezime: "", pratSrodstvo: "", pratJmbg: "", pratPotvrda: "Ne",
+                    uputLekar: "Kabinet Ambulanta 2 - Specijalističke konsultacije", uputHitnost: "Hitna evakuacija / Akutno stanje", globalStatus: "Lekarski Obrađen",
+                    tipPosete: "Prvi specijalistički pregled", dgKod: "M54.5 Lumbalgia acuta", anamneza: "Oštar bol nastao naglo pri rotaciji trupa sa teretom pre 4 dana. Bol se ne širi niz ekstremitete.",
+                    lokalni: "Izražen paravertebralni spazam lumbalno obostrano. Antalgičan položaj trupa udesno.", rom: "Pokreti u lumbalnom delu oštro ograničeni u svim pravcima zbog jakog bola.", mmt: "Gruba motorna snaga na nogama 5/5.", refleksi: "Simetrični, patološki refleksi se ne izazivaju.", antropometrija: "Bez otoka.",
+                    konsSpecijalnost: "Nema upućivanja", konsRazlog: "",
+                    planTerapija: [
+                        { naziv: "Elektroterapija (Dijadinamične struje DDS)", seanse: 5 },
+                        { naziv: "Visokointenzivna magnetoterapija (Salus Talent)", seanse: 5 }
+                    ],
+                    matricaPrisustva: {
+                        "Elektroterapija (Dijadinamične struje DDS)": ["empty", "empty", "empty", "empty", "empty"],
+                        "Visokointenzivna magnetoterapija (Salus Talent)": ["empty", "empty", "empty", "empty", "empty"]
+                    },
+                    bModelFond: "RFZO", bTrosakSmestaj: 0, bTrosakPregledi: 0, bPlaceno: false,
+                    oIshod: "Bez promena (Status quo)", oZavrsniStatus: "", oPreporuka: ""
+                }
+            ];
+            dbCommit();
+            activePatientId = "M-2026/105";
+            routeTo('pult');
+        }
+
+        // INITIALIZE HIS SYSTEM ENGINE
+        routeTo('pult');
+    </script>
+</body>
+</html>
