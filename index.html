@@ -1,36 +1,20 @@
-<!DOCTYPE html>
-<html lang="sr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedCore HIS Enterprise v9.0 - Clinical Platform</title>
     <title>MedCore HIS Enterprise v9.4 - Clinical Management Platform</title>
-    <title>MedCore Rehab OS v5.5 Extreme - Enterprise</title>
 <style>
 :root {
-            --primary-dark: #0f172a;
-            --accent-blue: #1e3a8a;
-            --hospital-blue: #2563eb;
-            --border-color: #cbd5e1;
-            --bg-light: #f8fafc;
-            --card-bg: #ffffff;
-            --success-green: #15803d;
-            --danger-red: #b91c1c;
-            --warning-amber: #b45309;
+--primary-dark: #0f172a;
+@@ -15,65 +15,298 @@
+--success-green: #15803d;
+--danger-red: #b91c1c;
+--warning-amber: #b45309;
             --text-muted: #64748b;
-            --bg-color: #0b0f17;
-            --panel-bg: #141923;
-            --border-color: #263244;
-            --text-color: #c9d1d9;
-            --text-main: #ffffff;
-            --accent-color: #4493f8;
-            --accent-success: #56b367;
-            --accent-warn: #e3b341;
-            --accent-danger: #f85149;
-            --text-muted: #8b949e;
-            --input-bg: #0b0f17;
-            --card-active-bg: rgba(68, 147, 248, 0.08);
 }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--bg-light); color: var(--primary-dark); padding: 10px; font-size: 13px; }
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -44,24 +28,14 @@
             padding: 12px; 
             font-size: 13px; 
             line-height: 1.5;
-        [data-theme="light"] {
-            --bg-color: #f4f6f9;
-            --panel-bg: #ffffff;
-            --border-color: #d0d7de;
-            --text-color: #24292f;
-            --text-main: #091e42;
-            --accent-color: #0969da;
-            --accent-success: #1a7f37;
-            --accent-warn: #9a6700;
-            --accent-danger: #cf222e;
-            --text-muted: #57606a;
-            --input-bg: #ffffff;
-            --card-active-bg: rgba(9, 105, 218, 0.08);
-}
+        }
 
+        /* ENTERPRISE HEADER */
         /* ENTERPRISE APP HEADER */
-        header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-blue) 100%);
+header {
+background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-blue) 100%);
+            color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center;
             color: white; 
             padding: 15px 20px; 
             border-radius: 8px; 
@@ -69,11 +43,11 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; font-size: 14px; transition: background 0.2s; }
-
+box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+        .logo-area h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+        .logo-area span { font-size: 11px; background: var(--hospital-blue); padding: 2px 8px; border-radius: 20px; margin-left: 10px; font-weight: bold; }
+        
         .logo-area h1 { 
             font-size: 22px; 
             font-weight: 800; 
@@ -81,13 +55,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 15px; border-bottom: 2px solid var(--border-color); margin-bottom: 20px;
-}
-        .brand-zone h1 { font-size: 22px; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px; }
-        .brand-zone span { font-size: 11px; text-transform: uppercase; color: var(--accent-color); font-weight: bold; }
-
+        }
+        
         .logo-area span { 
             font-size: 11px; 
             background: var(--hospital-blue); 
@@ -96,11 +65,12 @@
             font-weight: bold; 
             text-transform: uppercase;
         }
-        .nav-modules { display: flex; gap: 8px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .mod-btn { padding: 8px 14px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
-        .mod-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .mod-btn.active { color: #fff; background: var(--accent-color); }
 
+        /* NAVIGACIONI STRUKTURIRANI TABOVI */
+        .main-nav { display: flex; gap: 4px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 6px; }
+        .nav-btn { padding: 8px 14px; border: none; background: transparent; color: #94a3b8; font-weight: 600; cursor: pointer; border-radius: 4px; transition: all 0.2s; font-size: 12px; }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-btn.active { background: var(--hospital-blue); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
         /* REVOLUCIJA U NAVIGACIJI (STRUKTURIRANI TABOVI) */
         .main-nav { 
             display: flex; 
@@ -109,8 +79,7 @@
             padding: 6px; 
             border-radius: 6px; 
         }
-        .layout-container { display: grid; grid-template-columns: 350px 1fr; gap: 20px; align-items: start; }
-
+        
         .nav-btn { 
             padding: 10px 16px; 
             border: none; 
@@ -125,14 +94,7 @@
             align-items: center;
             gap: 6px;
         }
-        /* PATIENT QUEUE & PROTOCOL LIST */
-        .sidebar-protocol { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; height: calc(100vh - 100px); display: flex; flex-direction: column; }
-        .search-box { margin-bottom: 12px; }
-        .patient-flow-list { flex: 1; overflow-y: auto; }
-        .flow-card { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: all 0.15s; }
-        .flow-card:hover { border-color: var(--accent-color); }
-        .flow-card.selected { border-left: 5px solid var(--accent-color); background: var(--card-active-bg); }
-
+        
         .nav-btn:hover { 
             background: rgba(255,255,255,0.12); 
             color: white; 
@@ -143,20 +105,27 @@
             color: white; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
         }
-        .meta-line { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 5px; }
-        .status-pill { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
+        /* INTEGRISANI GRID INTERFEJSA */
+        .workspace-grid { display: grid; grid-template-columns: 280px 1fr; gap: 15px; }
+        
+        /* SIDEBAR KARTOTEKA */
+        .patient-sidebar { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; height: calc(100vh - 90px); display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .sidebar-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 700; border-bottom: 2px solid var(--bg-light); padding-bottom: 6px; margin-bottom: 10px; }
+        .search-container input { width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 12px; background-color: var(--bg-light); }
+        .patient-list-flow { flex: 1; overflow-y: auto; }
+        .patient-row { background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+        .patient-row:hover { border-color: var(--hospital-blue); background: #f0f3ff; }
+        .patient-row.active { border-left: 5px solid var(--hospital-blue); background: #e0e7ff; border-color: var(--hospital-blue); }
+        .patient-row .name { font-weight: 700; color: var(--primary-dark); }
+        .patient-row .meta { font-size: 11px; color: #64748b; margin-top: 4px; }
         /* INTEGRISANI RADNI GRID PANEL */
         .workspace-grid { 
             display: grid; 
             grid-template-columns: 310px 1fr; 
             gap: 15px; 
         }
-        /* MAIN SYSTEM WORKSPACE */
-        .workspace { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; min-height: calc(100vh - 100px); }
-        .screen-section { display: none; }
-        .screen-section.active { display: block; }
-
+        
         /* SIDEBAR KARTOTEKA / PROTOKOLI */
         .patient-sidebar { 
             background: var(--card-bg); 
@@ -168,8 +137,7 @@
             flex-direction: column; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
         }
-        h2.section-title { font-size: 18px; color: var(--text-main); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-
+        
         .sidebar-title { 
             font-size: 11px; 
             text-transform: uppercase; 
@@ -180,14 +148,7 @@
             padding-bottom: 8px; 
             margin-bottom: 12px; 
         }
-        /* FORM CONTROLS */
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group { display: flex; flex-direction: column; margin-bottom: 12px; }
-        .form-group.full-width { grid-column: 1 / -1; }
-        label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; letter-spacing: 0.5px; }
-        input, select, textarea { background-color: var(--input-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 10px 12px; border-radius: 6px; font-size: 13px; width: 100%; transition: border-color 0.2s; }
-        input:focus, select:focus, textarea:focus { border-color: var(--accent-color); outline: none; }
-
+        
         .search-container input { 
             width: 100%; 
             padding: 9px 12px; 
@@ -197,24 +158,12 @@
             background-color: var(--bg-light); 
             font-size: 12px;
         }
-        /* BUTTONS */
-        .btn { padding: 10px 18px; border-radius: 6px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-transform: uppercase; transition: opacity 0.15s; }
-        .btn:hover { opacity: 0.9; }
-        .btn-primary { background: var(--accent-color); color: #fff; }
-        .btn-success { background: var(--accent-success); color: #fff; }
-        .btn-warn { background: var(--accent-warn); color: #000; }
-        .btn-danger { background: var(--accent-danger); color: #fff; }
-        .btn-secondary { background: var(--border-color); color: var(--text-color); }
-
+        
         .patient-list-flow { 
             flex: 1; 
             overflow-y: auto; 
         }
-        /* TABLES */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .data-table th, .data-table td { border: 1px solid var(--border-color); padding: 10px 12px; text-align: left; }
-        .data-table th { background: rgba(0,0,0,0.15); color: var(--text-main); font-weight: 600; }
-
+        
         .patient-row { 
             background: var(--bg-light); 
             border: 1px solid var(--border-color); 
@@ -249,18 +198,10 @@
             display: flex;
             justify-content: space-between;
         }
-        /* THERAPIST CHECKIN SYSTEM */
-        .attendance-matrix { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
-        .day-node { padding: 4px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); border-radius: 4px; text-align: center; min-width: 65px; }
-        .day-node span { font-size: 10px; font-weight: bold; display: block; color: var(--text-muted); margin-bottom: 3px; }
-        .state-indicator { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: #30363d; margin-bottom: 5px; }
-        .state-indicator.done { background: var(--accent-success); }
-        .state-indicator.excused { background: var(--accent-warn); }
-        .state-indicator.unexcused { background: var(--accent-danger); }
-        .btn-group-states { display: flex; gap: 2px; justify-content: center; }
-        .btn-state { padding: 2px 4px; font-size: 9px; border: none; cursor: pointer; font-weight: bold; border-radius: 2px; }
 
-        /* RADNI PROSTOR / KONTROLNE TABLE */
+/* RADNI PROSTOR / KONTROLNE TABLE */
+        .main-workspace { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; min-height: calc(100vh - 90px); box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: relative; }
+        .active-banner { background: #eff6ff; border-left: 4px solid var(--hospital-blue); padding: 12px 15px; margin-bottom: 20px; border-radius: 4px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         .main-workspace { 
             background: var(--card-bg); 
             border: 1px solid var(--border-color); 
@@ -286,325 +227,29 @@
         .clinical-section { 
             display: none; 
         }
-        /* ALERTS / INFOBAR */
-        .focused-patient-bar { background: rgba(68, 147, 248, 0.05); border: 1px solid var(--accent-color); border-radius: 6px; padding: 12px 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
 
+        .clinical-section { display: none; }
+        .clinical-section.active { display: block; }
         .clinical-section.active { 
             display: block; 
-        /* PRINT ENGINE AREA HIDDEN IN SCREEN */
-        #print-engine-output { display: none; }
+        }
 
-        @media print {
-            body * { display: none !important; }
-            #print-engine-output, #print-engine-output * { display: block !important; }
-            #print-engine-output { display: block !important; padding: 0; background: #ffffff !important; color: #000000 !important; font-family: 'Times New Roman', serif; font-size: 13px; line-height: 1.4; }
-            .a4-page { width: 210mm; min-height: 297mm; padding: 20mm; margin: 0 auto; background: #fff; box-shadow: none; position: relative; }
-            .a4-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-            .a4-hospital-info { font-size: 12px; font-weight: bold; text-transform: uppercase; line-height: 1.3; }
-            .a4-doc-title { text-align: center; font-size: 18px; font-weight: bold; margin: 25px 0 15px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-            .a4-patient-sticker { border: 1px solid #000; padding: 12px; background: #f8f9fa; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-            .a4-section { margin-bottom: 18px; page-break-inside: avoid; }
-            .a4-section h3 { font-size: 13px; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 2px; margin-bottom: 8px; text-transform: uppercase; }
-            .a4-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-            .a4-table th, .a4-table td { border: 1px solid #000; padding: 6px 8px; text-align: left; font-size: 11px; }
-            .a4-table th { background: #eaedd0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .a4-footer { margin-top: 60px; display: flex; justify-content: space-between; page-break-inside: avoid; }
-            .a4-signature-box { text-align: center; width: 220px; }
-            .a4-line { border-top: 1px solid #000; margin-top: 45px; padding-top: 5px; font-size: 11px; font-weight: bold; }
-}
-    </style>
-</head>
-<body>
-
-    <!-- SYSTEM HEADER -->
-    <header>
-        <div class="brand-zone">
-            <h1>MedCore Rehab OS <span>v5.5 Extreme Enterprise</span></h1>
-        </div>
-        <div class="nav-modules">
-            <button class="mod-btn active" id="btn-mod-pult" onclick="routeTo('pult')">🏢 Prijemni Pult</button>
-            <button class="mod-btn" id="btn-mod-lekar" onclick="routeTo('lekar')">🩺 Ambulanta Fizijatra</button>
-            <button class="mod-btn" id="btn-mod-emng" onclick="routeTo('emng')">⚡ EMNG Kabinet</button>
-            <button class="mod-btn" id="btn-mod-terapeut" onclick="routeTo('terapeut')">🏋️ Terapeutski Blok</button>
-            <button class="mod-btn" id="btn-mod-blagajna" onclick="routeTo('blagajna')">💳 Blagajna & Računi</button>
-            <button class="mod-btn" id="btn-mod-protokol" onclick="routeTo('protokol')">📜 Centralna Arhiva</button>
-        </div>
-        <div>
-            <button onclick="toggleThemeSystem()" class="btn btn-secondary" style="padding:5px 10px; font-size:11px;">🌓 Tema</button>
-        </div>
-    </header>
-
+        /* FORME, REŠETKE I INPUTI */
         /* FORME, REŠETKE I INPUT SEKTORI */
-        .grid-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
-        .grid-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
+.grid-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+.grid-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
+        .field-group { display: flex; flex-direction: column; margin-bottom: 12px; }
+        .field-group label { font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+        input, select, textarea { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: #fff; color: var(--primary-dark); transition: border 0.2s; width: 100%; }
+        input:focus, select:focus, textarea:focus { border-color: var(--hospital-blue); outline: none; }
+        textarea { resize: vertical; font-family: inherit; }
         .grid-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px; }
-    <!-- CORE WORKSPACE LAYOUT -->
-    <div class="layout-container">
-
+        
         .field-group { 
             display: flex; 
             flex-direction: column; 
             margin-bottom: 12px; 
-        <!-- SIDEBAR CENTRAL REHAB PROTOCOL -->
-        <aside class="sidebar-protocol">
-            <h3>📋 Aktivni Protokol Bolnice</h3>
-            <div class="search-box">
-                <input type="text" id="system-search-input" oninput="filtrirajPacijente()" placeholder="🔍 Pretraga (Ime, Istorija bolesti...)">
-            </div>
-            <div class="patient-flow-list" id="dom-patient-flow-list">
-                <!-- Dynamic injected cards -->
-            </div>
-            <button class="btn btn-secondary" style="width:100%; font-size:11px; margin-top:10px;" onclick="injektujSveobuhvatneDemoPodatke()">⚡ Učitaj kompletne demo slučajeve</button>
-        </aside>
-
-        <!-- ACTIVE SYSTEM WORKSPACE CONTENT -->
-        <main class="workspace">
-            
-            <!-- GLOBAL PATIENT FOCUS DISPLAYER -->
-            <div class="focused-patient-bar" id="global-focus-bar" style="display:none;">
-                <div>
-                    <span style="font-size:11px; color:var(--text-muted); font-weight:bold; text-transform:uppercase;">Selektovan aktivni karton:</span>
-                    <h3 id="focus-patient-name" style="color:var(--text-main);">Nema selekcije</h3>
-                    <p id="focus-patient-meta" style="font-size:12px; color:var(--text-muted);"></p>
-                </div>
-                <div id="focus-action-printing-zone" style="display:flex; gap:8px;"></div>
-            </div>
-
-            <!-- MODULE 1: PRIJEMNI PULT (EVALUACIJA & UPUTI) -->
-            <section id="screen-pult" class="screen-section active">
-                <h2 class="section-title">Otvaranje Istorije Bolesti i Upućivanje u Službe</h2>
-                <form id="form-pult-registracija" onsubmit="pultRegistrujPacijenta(event)">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Broj Istorije Bolesti (Matični Protokol)</label><input type="text" id="p-reg-id" required placeholder="Npr. Z-2026/894"></div>
-                        <div class="form-group"><label>Ime pacijenta</label><input type="text" id="p-reg-ime" required></div>
-                        <div class="form-group"><label>Prezime pacijenta</label><input type="text" id="p-reg-prezime" required></div>
-                        <div class="form-group"><label>JMBG / Identifikacioni broj</label><input type="text" id="p-reg-jmbg" required></div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group"><label>Kontakt Telefon</label><input type="text" id="p-reg-tel"></div>
-                        <div class="form-group">
-                            <label>Tip Lečenja i Smeštaja</label>
-                            <select id="p-reg-smestaj" onchange="toggleKuhinjaForm(this.value)">
-                                <option value="Ambulantno">Ambulantno (Dnevna bolnica)</option>
-                                <option value="Stacionarno">Stacionarno (Ležeći pacijent)</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label>Uputna Dijagnoza i Sumnja (Uputnica)</label><input type="text" id="p-reg-uputnadg" placeholder="Mkb10 ili opis"></div>
-                    </div>
-
-                    <!-- KUHINJSKI KARTON / RESTORANSKI BLOK -->
-                    <div id="pult-kuhinja-block" style="display:none; background:rgba(0,0,0,0.15); padding:15px; border-radius:6px; border:1px dashed var(--border-color); margin-bottom:15px;">
-                        <h4 style="margin-bottom:10px; color:var(--accent-warn);">🍽️ Kartica za bolničku kuhinju i ishranu (Stacionar)</h4>
-                        <div class="form-grid">
-                            <div class="form-group"><label>Broj Odeljenja i Sobe</label><input type="text" id="p-kuh-soba" placeholder="Npr. Odeljenje B, Soba 204"></div>
-                            <div class="form-group">
-                                <label>Propisani Režim Ishrane (Dijeta)</label>
-                                <select id="p-kuh-dijeta">
-                                    <option value="Standardna bolnička ishrana">Standardna bolnička ishrana</option>
-                                    <option value="Dijabetička dijeta (Šećerna bolest)">Dijabetička dijeta (Šećerna bolest)</option>
-                                    <option value="Neslana / Kardiološka dijeta">Neslana / Kardiološka dijeta</option>
-                                    <option value="Žučna / Hepatalna dijeta">Žučna / Hepatalna dijeta</option>
-                                    <option value="Miksana / Kašasta hrana">Miksana / Kašasta hrana</option>
-                                </select>
-                            </div>
-                            <div class="form-group"><label>Napomena o alergijama na hranu</label><input type="text" id="p-kuh-alergije" placeholder="Npr. Alergija na gluten, orašaste plodove"></div>
-                        </div>
-                    </div>
-
-                    <!-- ELEKTRONSKO UPUĆIVANJE -->
-                    <div style="background:rgba(68,147,248,0.03); padding:15px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:15px;">
-                        <h4 style="margin-bottom:10px; color:var(--accent-color);">➡️ Elektronski uput i trijaža</h4>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Uputna ordinacija / Lekar izvršilac</label>
-                                <select id="p-uput-lekar">
-                                    <option value="Ordinacija 1 - Prvi pregled fizijatra">Ordinacija 1 - Prvi pregled fizijatra</option>
-                                    <option value="Ordinacija 2 - Specijalističke konsultacije">Ordinacija 2 - Specijalističke konsultacije</option>
-                                    <option value="Kabinet za EMNG dijagnostiku">Kabinet za EMNG dijagnostiku</option>
-                                    <option value="Direktan uput u terapeutski blok">Direktan uput u terapeutski blok</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Kategorija hitnosti</label>
-                                <select id="p-uput-hitnost">
-                                    <option value="Redovan prijem">Redovan prijem (Hronični program)</option>
-                                    <option value="Post-traumatska rehabilitacija">Post-traumatska rehabilitacija (Prioritet)</option>
-                                    <option value="Hitno">Hitno (Akutni bolni sindromi / Post-op)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-success" style="width:100%;">💾 Otvori karton, zavedi u protokol i uputi pacijenta</button>
-                </form>
-            </section>
-
-            <!-- MODULE 2: SPECIJALISTIČKI PREGLED / KONSULTACIJE FIZIJATRA -->
-            <section id="screen-lekar" class="screen-section">
-                <h2 class="section-title">Lekarska Ambulanta i Propisivanje Kure Terapija</h2>
-                <div class="form-grid" style="margin-bottom:15px;">
-                    <div class="form-group">
-                        <label>Tip Lekarske Posete</label>
-                        <select id="l-tip-posete" onchange="adaptirajLekarskuFormu(this.value)">
-                            <option value="Prvi pregled">Prvi specijalistički pregled fizijatra</option>
-                            <option value="Konsultacija">Specijalističke konsultacije / Kontrolni izveštaj</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Zavedena dijagnoza (MKB-10 Šifra i tekst)</label><input type="text" id="l-dg-kod" placeholder="Npr. M54.5 Lumbalgia"></div>
-                </div>
-
-                <div class="form-group"><label>Anamneza (Sadašnja bolest, faktori rizika, funkcionalne smetnje pri hodu/radu)</label><textarea id="l-anamneza" rows="3"></textarea></div>
-                
-                <!-- DETALJAN STATUS -->
-                <div class="form-grid">
-                    <div class="form-group"><label>Lokalni nalazi i palpatorni status</label><textarea id="l-lokalni" rows="2"></textarea></div>
-                    <div class="form-group"><label>Obim pokreta (ROM - Range of Motion)</label><textarea id="l-rom" rows="2"></textarea></div>
-                    <div class="form-group"><label>Manuelni mišićni test (MMT i gruba snaga)</label><textarea id="l-mmt" rows="2"></textarea></div>
-                </div>
-
-                <div class="form-grid" id="l-ekstra-polja">
-                    <div class="form-group"><label>Refleksni status i senzibilitet</label><input type="text" id="l-refleksi" placeholder="Uredan, simetričan, oslabljen L5..."></div>
-                    <div class="form-group"><label>Antropometrijska merenja (Obimi ekstremiteta u cm)</label><input type="text" id="l-antropometrija" placeholder="Npr. Obim desnog kolena 42cm, levog 44cm"></div>
-                </div>
-
-                <!-- DODAVANJE TERAPIJE -->
-                <div style="margin-top:20px; padding:15px; background:rgba(227,179,65,0.04); border:1px solid var(--border-color); border-radius:6px;">
-                    <h3 style="color:var(--accent-warn); font-size:14px; margin-bottom:10px;">📋 Formulisanje Balneo-Fizikalnog Plana i Programa</h3>
-                    <div style="display:grid; grid-template-columns:3fr 1fr 1fr; gap:10px;">
-                        <div>
-                            <label>Procedura</label>
-                            <select id="l-plan-naziv">
-                                <option value="Kineziterapija (Individualne korektivne vežbe)">Kineziterapija (Individualne korektivne vežbe)</option>
-                                <option value="Elektroterapija (Interferentne struje - IFS)">Elektroterapija (Interferentne struje - IFS)</option>
-                                <option value="Elektroterapija (Dijadinamične struje - DDS)">Elektroterapija (Dijadinamične struje - DDS)</option>
-                                <option value="Ultrazvučna terapija (Sonoforeza leka)">Ultrazvučna terapija (Sonoforeza leka)</option>
-                                <option value="Magnetoterapija (Visokointenzivni Salus Talent)">Magnetoterapija (Visokointenzivni Salus Talent)</option>
-                                <option value="Lasero-terapija (HILT laser)">Lasero-terapija (HILT laser)</option>
-                                <option value="Hidrokineziterapija (Vežbe u terapeutskom bazenu)">Hidrokineziterapija (Vežbe u terapeutskom bazenu)</option>
-                                <option value="Termoterapija (Aplikacija parafina)">Termoterapija (Aplikacija parafina)</option>
-                            </select>
-                        </div>
-                        <div><label>Broj Dana/Seansi</label><input type="number" id="l-plan-seanse" value="10" min="1" max="30"></div>
-                        <div style="display:flex; align-items:flex-end;"><button type="button" class="btn btn-warn" style="width:100%;" onclick="dodajTerapijuLekar()">Dodaj</button></div>
-                    </div>
-                    <table class="data-table" id="table-lekar-trenutni-plan">
-                        <thead><tr><th>Procedura</th><th>Propisan Broj Seansi</th><th>Akcija</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-
-                <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="sacuvajAmbulantniNalazLekara()">💾 Završi pregled i upiši u medicinski protokol</button>
-            </section>
-
-            <!-- MODULE 3: EMNG KABINET -->
-            <section id="screen-emng" class="screen-section">
-                <h2 class="section-title">Elektromioneurografska Dijagnostika (EMNG)</h2>
-                <div class="form-grid">
-                    <div class="form-group"><label>Uputna dijagnoza i neurološke indikacije</label><input type="text" id="e-uputna-ind"></div>
-                    <div class="form-group"><label>Dijagnostički aparat i konfiguracija</label><input type="text" id="e-aparat" value="MedCore NeuroScan Expert v4"></div>
-                </div>
-                <div class="form-grid">
-                    <div class="form-group"><label>Neurografski Nalaz (NCS - Brzine provodljivosti, latence, amplitude)</label><textarea id="e-ncs" rows="3" placeholder="Nn. peroneus et tibialis..."></textarea></div>
-                    <div class="form-group"><label>Mioneurografski Nalaz (EMG - Iglični pregled mišića u miru i naporu)</label><textarea id="e-emg" rows="3" placeholder="m. tibialis anterior, m. gastrocnemius..."></textarea></div>
-                </div>
-                <div class="form-group"><label>ZAKLJUČAK ELEKTROFIZIOLOŠKOG PREGLEDA</label><textarea id="e-zakljucak" rows="2" style="border: 1px solid var(--accent-color); font-weight:bold;"></textarea></div>
-                <button class="btn btn-success" style="width:100%;" onclick="sacuvajEmngIzvestaj()">💾 Validacija i Potpisivanje EMNG Nalaza</button>
-            </section>
-
-            <!-- MODULE 4: TERAPEUTSKI BLOK (LOG MATRICA PRISUSTVA) -->
-            <section id="screen-terapeut" class="screen-section">
-                <h2 class="section-title">Terapeutski Karton i Evidencija Dolazaka</h2>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Označite prisustvo pacijenta za svaki dan pojedinačno: ✓ (Sprovedeno), O (Opravdano odsutan), X (Neopravdano odsutan).</p>
-                <div style="overflow-x:auto;">
-                    <table class="data-table" id="table-terapeut-evidencija">
-                        <thead><tr><th>Procedura</th><th>Matrica prisustva i statusi seansi po danima</th><th>Ukupno Realizovano</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- MODULE 5: BLAGAJNA I NAPLATA -->
-            <section id="screen-blagajna" class="screen-section">
-                <h2 class="section-title">Finansijski Obračun i Naplata Usluga</h2>
-                <div style="background:rgba(0,0,0,0.1); border:1px solid var(--border-color); padding:15px; border-radius:6px; margin-bottom:20px;">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Model Finansiranja / Pokriće troškova</label>
-                            <select id="b-model-fond" onchange="preracunajFinansije()">
-                                <option value="RFZO">RFZO Uputnica (100% Pokriveno Fondom)</option>
-                                <option value="Participacija">Participacija (RFZO + Lično učešće)</option>
-                                <option value="Privatno">Privatno plaćanje (Komercijalni cenovnik)</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label>Dodatni troškovi stacionarnog smeštaja (RSD)</label><input type="number" id="b-trosak-smestaj" value="0" oninput="preracunajFinansije()"></div>
-                        <div class="form-group"><label>Troškovi lekarskih vizita i dijagnostike (RSD)</label><input type="number" id="b-trosak-pregledi" value="0" oninput="preracunajFinansije()"></div>
-                    </div>
-                </div>
-
-                <h3>Specifikacija usluga za naplatu</h3>
-                <table class="data-table" id="table-blagajna-obracun">
-                    <thead><tr><th>Stavka računa</th><th>Kvantitet / Dani</th><th>Jedinična cena</th><th>Ukupno (RSD)</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-
-                <div style="text-align:right; margin-top:15px; font-size:18px; color:var(--text-main); font-weight:bold;">
-                    Ukupno za naplatu: <span id="b-faktura-total" style="color:var(--accent-success);">0</span> RSD
-                </div>
-                <button class="btn btn-success" style="width:100%; margin-top:15px;" onclick="faktursiISacuvajFinansije()">💳 Proknjiži uplatu i zatvori finansijski dosije</button>
-            </section>
-
-            <!-- MODULE 6: CENTRALNA ARHIVA I PROTOKOLI -->
-            <section id="screen-protokol" class="screen-section">
-                <h2 class="section-title">Centralni Protokol Rehabilitacije i Otpusna Lista</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Završna ocena ishoda lečenja</label>
-                        <select id="o-ishod">
-                            <option value="Značajno funkcionalno poboljšanje statusa">Značajno funkcionalno poboljšanje statusa</option>
-                            <option value="Umereno funkcionalno poboljšanje statusa">Umereno funkcionalno poboljšanje statusa</option>
-                            <option value="Bez značajnog napretka (Status Quo)">Bez značajnog napretka (Status Quo)</option>
-                            <option value="Prekid tretmana zbog kontraindikacija / pogoršanja">Prekid tretmana zbog kontraindikacija / pogoršanja</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Završni MMT i Obim pokreta na otpustu</label><input type="text" id="o-zavrsni-status"></div>
-                </div>
-                <div class="form-group"><label>Preporuke za kućne uslove, zaštitne položaje i nastavak kineziterapije</label><textarea id="o-preporuka" rows="3"></textarea></div>
-                <button class="btn btn-primary" style="width:100%;" onclick="finalizujOtpusnuListuArhiva()">💾 Zaključaj istoriju bolesti i generiši konačnu otpusnu listu</button>
-            </section>
-
-        </main>
-    </div>
-
-    <!-- ADVANCED A4 PRINT LAYOUT ENGINE (GENERATED ON THE FLY) -->
-    <div id="print-engine-output"></div>
-
-    <script>
-        // CENTRAL DATABASE CONTEXT
-        let bolnicaDB = JSON.parse(localStorage.getItem('medcore_enterprise_rehab_db')) || [];
-        let activePatientId = null;
-        let currentActiveModule = 'pult';
-
-        // APPLICATION CONFIGURATION
-        const CENOVNIK = {
-            "Terapija": 800,       // Cena po jednoj fizikalnoj proceduri
-            "Pregled": 2500,       // Cena specijalističkog pregleda
-            "Konsultacija": 1500,  // Cena konsultativnog izveštaja
-            "EMNG": 5000           // Cena neurofiziološke dijagnostike
-        };
-
-        // ROUTING SYSTEM
-        function routeTo(moduleId) {
-            currentActiveModule = moduleId;
-            document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
-            
-            document.getElementById(`btn-mod-${moduleId}`).classList.add('active');
-            document.getElementById(`screen-${moduleId}`).classList.add('active');
-            
-            renderujProtokolListu();
-            osveziPacijentFokus();
-            loadPatientDataToInputs();
-}
+        }
         
         .field-group label { 
             font-size: 11px; 
@@ -613,11 +258,7 @@
             margin-bottom: 6px; 
             text-transform: uppercase; 
             letter-spacing: 0.3px; 
-
-        function toggleThemeSystem() {
-            const theme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-            document.documentElement.setAttribute("data-theme", theme);
-}
+        }
         
         input, select, textarea { 
             padding: 9px 12px; 
@@ -628,78 +269,24 @@
             color: var(--primary-dark); 
             transition: border 0.2s, box-shadow 0.2s; 
             width: 100%; 
-
-        function toggleKuhinjaForm(val) {
-            document.getElementById('pult-kuhinja-block').style.display = val === "Stacionarno" ? "block" : "none";
-}
+        }
         
         input:focus, select:focus, textarea:focus { 
             border-color: var(--hospital-blue); 
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
             outline: none; 
-
-        // DATABASE SAVE PERSISTENCE
-        function dbCommit() {
-            localStorage.setItem('medcore_enterprise_rehab_db', JSON.stringify(bolnicaDB));
-}
+        }
         
         textarea { 
             resize: vertical; 
             font-family: inherit; 
+        }
 
-        // PATIENT REGISTRATION (PULT)
-        function pultRegistrujPacijenta(e) {
-            e.preventDefault();
-            const idNum = document.getElementById('p-reg-id').value.trim();
-            if (bolnicaDB.some(p => p.id === idNum)) {
-                alert("Greška: Broj istorije bolesti već postoji u centralnom protokolu!");
-                return;
-            }
-
-            const noviPacijent = {
-                id: idNum,
-                ime: document.getElementById('p-reg-ime').value.trim(),
-                prezime: document.getElementById('p-reg-prezime').value.trim(),
-                jmbg: document.getElementById('p-reg-jmbg').value.trim(),
-                tel: document.getElementById('p-reg-tel').value.trim(),
-                smestaj: document.getElementById('p-reg-smestaj').value,
-                uputnaDg: document.getElementById('p-reg-uputnadg').value.trim(),
-                
-                // Ishrana / Kuhinja
-                kuhSoba: document.getElementById('p-kuh-soba').value.trim() || "Nije stacionaran",
-                kuhDijeta: document.getElementById('p-kuh-dijeta').value,
-                kuhAlergije: document.getElementById('p-kuh-alergije').value.trim() || "Nema",
-
-                // Trijaža
-                uputLekar: document.getElementById('p-uput-lekar').value,
-                uputHitnost: document.getElementById('p-uput-hitnost').value,
-                globalStatus: "Prijem",
-
-                // Lekarski blok
-                tipPosete: "Prvi pregled", dgKod: "", anamneza: "", lokalni: "", rom: "", mmt: "", refleksi: "", antropometrija: "",
-                planTerapija: [], // { naziv, seanse }
-                
-                // EMNG Kabinet
-                emngUputnaInd: "", emngAparat: "MedCore NeuroScan Expert v4", emngNcs: "", emngEmg: "", emngZakljucak: "",
-
-                // Terapeutsko prisustvo
-                matricaPrisustva: {}, // { "Naziv": [ 'done', 'excused', 'unexcused', 'empty' ] }
-
-                // Blagajna
-                bModelFond: "RFZO", bTrosakSmestaj: 0, bTrosakPregledi: 0, bPlaceno: false,
-
-                // Otpust / Arhiva
-                oIshod: "", oZavrsniStatus: "", oPreporuka: ""
-            };
-
-            bolnicaDB.push(noviPacijent);
-            dbCommit();
-            activePatientId = noviPacijent.id;
-            document.getElementById('form-pult-registracija').reset();
-            alert("Pacijent uspešno registrovan i poslat u sistem.");
-            routeTo('lekar');
-}
-
+        /* KLINIČKI ŠABLONI BRZI TASTER */
+        .template-wrapper { background: #f1f5f9; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; margin-bottom: 15px; }
+        .template-heading { font-weight: 700; font-size: 11px; color: #475569; text-transform: uppercase; margin-bottom: 6px; }
+        .t-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 5px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; margin-right: 5px; margin-bottom: 5px; transition: all 0.2s; }
+        .t-btn:hover { background: var(--hospital-blue); color: white; border-color: var(--hospital-blue); }
         /* BRZI KLINIČKI ŠABLONI (KLIK OKIDAČI) */
         .template-wrapper { 
             background: #f1f5f9; 
@@ -707,43 +294,7 @@
             padding: 12px; 
             border-radius: 6px; 
             margin-bottom: 18px; 
-        // RENDER PROTOKOL SIDEBAR
-        function renderujProtokolListu() {
-            const container = document.getElementById('dom-patient-flow-list');
-            container.innerHTML = "";
-            
-            if (bolnicaDB.length === 0) {
-                container.innerHTML = `<p style="font-size:11px; color:var(--text-muted); padding:10px;">Nema aktivnih pacijenata u protokolu.</p>`;
-                return;
-            }
-
-            bolnicaDB.forEach(p => {
-                const card = document.createElement('div');
-                card.className = `flow-card ${p.id === activePatientId ? 'selected' : ''}`;
-                card.onclick = () => selectPatientFromFlow(p.id);
-
-                let colorPill = "var(--accent-color)";
-                if(p.globalStatus === "Lekarski pregled") colorPill = "#bc8cff";
-                if(p.globalStatus === "Terapijski Blok") colorPill = "var(--accent-warn)";
-                if(p.globalStatus === "Otpušten") colorPill = "var(--accent-success)";
-
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong style="color:var(--text-main);">${p.ime} ${p.prezime}</strong>
-                        <span style="cursor:pointer;" onclick="ukloniPacijentaIzSistema(event, '${p.id}')">🗑️</span>
-                    </div>
-                    <div class="meta-line">
-                        <span>ID: ${p.id}</span>
-                        <span class="status-pill" style="background:${colorPill}; color:#000;">${p.globalStatus}</span>
-                    </div>
-                    <div class="meta-line" style="margin-top:2px; font-size:10px;">
-                        <span>Krevet: ${p.kuhSoba}</span>
-                        <span>Dijeta: ${p.kuhDijeta.split(' ')[0]}</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-}
+        }
         
         .template-heading { 
             font-weight: 700; 
@@ -752,15 +303,7 @@
             text-transform: uppercase; 
             margin-bottom: 8px; 
             letter-spacing: 0.5px;
-
-        function filtrirajPacijente() {
-            const query = document.getElementById('system-search-input').value.toLowerCase();
-            const cards = document.querySelectorAll('.flow-card');
-            cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(query) ? 'block' : 'none';
-            });
-}
+        }
         
         .t-btn { 
             background: #ffffff; 
@@ -773,29 +316,16 @@
             margin-right: 6px; 
             margin-bottom: 6px; 
             transition: all 0.2s; 
-
-        function ukloniPacijentaIzSistema(e, id) {
-            e.stopPropagation();
-            if(confirm("UPOZORENJE: Potpunim uklanjanjem brišete i lekarske nalaze, EMNG, terapeutsko prisustvo i blagajnički račun! Da li ste sigurni?")) {
-                bolnicaDB = bolnicaDB.filter(x => x.id !== id);
-                if(activePatientId === id) activePatientId = null;
-                dbCommit();
-                routeTo(currentActiveModule);
-            }
-}
+        }
         
         .t-btn:hover { 
             background: var(--hospital-blue); 
             color: white; 
             border-color: var(--hospital-blue); 
+        }
 
-        function selectPatientFromFlow(id) {
-            activePatientId = id;
-            renderujProtokolListu();
-            osveziPacijentFokus();
-            loadPatientDataToInputs();
-}
-
+        /* AKCIONI TASTERI */
+        .btn { padding: 10px 18px; font-weight: 700; border-radius: 6px; cursor: pointer; border: none; text-transform: uppercase; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
         /* DUGMIĆI / AKCIJE */
         .btn { 
             padding: 11px 20px; 
@@ -811,41 +341,20 @@
             gap: 8px; 
             transition: background 0.2s, transform 0.1s; 
             letter-spacing: 0.3px;
-        // DYNAMIC CONTEXTUAL FOCUS BAR & ACTION CONTROLLER
-        function osveziPacijentFokus() {
-            const bar = document.getElementById('global-focus-bar');
-            if (!activePatientId) {
-                bar.style.display = "none";
-                return;
-            }
-            bar.style.display = "flex";
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            
-            document.getElementById('focus-patient-name').innerText = `[${p.id}] ${p.ime} ${p.prezime}`;
-            document.getElementById('focus-patient-meta').innerText = `Smeštaj: ${p.smestaj} | Hrana: ${p.kuhDijeta} | Soba: ${p.kuhSoba} | Status protokola: ${p.globalStatus}`;
-            
-            // Profesionalna A4 dugmad za štampanje - stalno dostupna nezavisno od modula
-            const btnZone = document.getElementById('focus-action-printing-zone');
-            btnZone.innerHTML = `
-                <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('pult')">🖨️ Kuhinjska/Prijemna Karta</button>
-                <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('lekar')">🖨️ Nalaz Fizijatra</button>
-                <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('emng')">🖨️ EMNG Izveštaj</button>
-                <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('terapeut')">🖨️ Lista Prisustva</button>
-                <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('racun')">🖨️ Faktura / Račun</button>
-                <button class="btn btn-primary" style="font-size:11px; padding:6px 10px;" onclick="izvrsiZvanicnuA4Stampu('komplet')">🖨️ KONAČNI PROTOKOL + OTPUSNA</button>
-            `;
-}
+        }
         
         .btn:active { transform: scale(0.98); }
-        .btn-primary { background: var(--hospital-blue); color: white; }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-success { background: var(--success-green); color: white; }
-        .btn-success:hover { background: #166534; }
-        .btn-danger { background: var(--danger-red); color: white; }
-        .btn-danger:hover { background: #991b1b; }
-        .btn-secondary { background: #e2e8f0; color: #334155; }
-        .btn-secondary:hover { background: #cbd5e1; }
+.btn-primary { background: var(--hospital-blue); color: white; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-success { background: var(--success-green); color: white; }
+@@ -83,48 +316,218 @@
+.btn-secondary { background: #e2e8f0; color: #334155; }
+.btn-secondary:hover { background: #cbd5e1; }
 
+        /* ENTITY TABLES */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; background: #fff; }
+        .data-table th, .data-table td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+        .data-table th { background: #f1f5f9; color: var(--accent-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; }
         /* ENTITETSKE TABELE I MATRICE */
         .data-table { 
             width: 100%; 
@@ -853,53 +362,13 @@
             margin-top: 10px; 
             margin-bottom: 15px; 
             background: #fff; 
-
-        // LOAD DATA PERSISTENCE INTERACTION TO VIEW
-        function loadPatientDataToInputs() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if (!p) return;
-
-            // Lekar
-            document.getElementById('l-tip-posete').value = p.tipPosete || "Prvi pregled";
-            document.getElementById('l-dg-kod').value = p.dgKod || "";
-            document.getElementById('l-anamneza').value = p.anamneza || "";
-            document.getElementById('l-lokalni').value = p.lokalni || "";
-            document.getElementById('l-rom').value = p.rom || "";
-            document.getElementById('l-mmt').value = p.mmt || "";
-            document.getElementById('l-refleksi').value = p.refleksi || "";
-            document.getElementById('l-antropometrija').value = p.antropometrija || "";
-            renderujTabeluLekarskogPlana(p);
-
-            // EMNG
-            document.getElementById('e-uputna-ind').value = p.emngUputnaInd || p.uputnaDg;
-            document.getElementById('e-aparat').value = p.emngAparat || "MedCore NeuroScan Expert v4";
-            document.getElementById('e-ncs').value = p.emngNcs || "";
-            document.getElementById('e-emg').value = p.emngEmg || "";
-            document.getElementById('e-zakljucak').value = p.emngZakljucak || "";
-
-            // Terapeut
-            renderujTerapeutskuTabelu(p);
-
-            // Blagajna
-            document.getElementById('b-model-fond').value = p.bModelFond || "RFZO";
-            document.getElementById('b-trosak-smestaj').value = p.bTrosakSmestaj || 0;
-            document.getElementById('b-trosak-pregledi').value = p.bTrosakPregledi || 0;
-            preracunajFinansije();
-
-            // Otpust / Centralni Protokol
-            document.getElementById('o-ishod').value = p.oIshod || "Značajno funkcionalno poboljšanje statusa";
-            document.getElementById('o-zavrsni-status').value = p.oZavrsniStatus || "";
-            document.getElementById('o-preporuka').value = p.oPreporuka || "";
-}
+        }
         
         .data-table th, .data-table td { 
             border: 1px solid var(--border-color); 
             padding: 10px 12px; 
             text-align: left; 
-
-        function adaptirajLekarskuFormu(val) {
-            document.getElementById('l-ekstra-polja').style.display = val === "Prvi pregled" ? "grid" : "none";
-}
+        }
         
         .data-table th { 
             background: #f1f5f9; 
@@ -907,26 +376,13 @@
             font-weight: 700; 
             font-size: 11px; 
             text-transform: uppercase; 
+        }
 
-        // LEKAR: PROGRAM MANAGEMENT
-        function dodajTerapijuLekar() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if (!p) return alert("Morate selektovati pacijenta iz levog protokola!");
-
-            const naziv = document.getElementById('l-plan-naziv').value;
-            const seanse = parseInt(document.getElementById('l-plan-seanse').value) || 10;
-
-            if(p.planTerapija.some(t => t.naziv === naziv)) {
-                alert("Ova fizikalna procedura je već u planu.");
-                return;
-            }
-
-            p.planTerapija.push({ naziv: naziv, seanse: seanse });
-            p.matricaPrisustva[naziv] = Array(seanse).fill("empty");
-            
-            renderujTabeluLekarskogPlana(p);
-}
-
+        /* ATTENDANCE CALENDAR MATRIX */
+        .attendance-matrix { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; background: #f8fafc; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; }
+        .day-box { background: white; border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .day-box span { font-weight: bold; font-size: 11px; }
+        .day-box input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
         /* MATRIX ATTENDANCE PANEL (10 DANA CALENDAR) */
         .attendance-matrix { 
             display: grid; 
@@ -936,19 +392,7 @@
             padding: 12px; 
             border: 1px solid var(--border-color); 
             border-radius: 6px; 
-        function renderujTabeluLekarskogPlana(p) {
-            const tbody = document.querySelector('#table-lekar-trenutni-plan tbody');
-            tbody.innerHTML = "";
-            p.planTerapija.forEach((t, i) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${t.naziv}</strong></td>
-                    <td>${t.seanse} seansi</td>
-                    <td><button type="button" class="btn btn-danger" style="padding:3px 8px; font-size:11px;" onclick="ukloniTerapijuLekar(${i})">Ukloni</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-}
+        }
         
         .day-box { 
             background: white; 
@@ -961,127 +405,35 @@
             align-items: center; 
             gap: 6px; 
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-
-        function ukloniTerapijuLekar(i) {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if(p) {
-                const naziv = p.planTerapija[i].naziv;
-                delete p.matricaPrisustva[naziv];
-                p.planTerapija.splice(i, 1);
-                renderujTabeluLekarskogPlana(p);
-            }
-}
+        }
         
         .day-box span { 
             font-weight: 700; 
             font-size: 11px; 
             color: #475569;
-
-        function sacuvajAmbulantniNalazLekara() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if (!p) return alert("Selektujte pacijenta!");
-
-            p.tipPosete = document.getElementById('l-tip-posete').value;
-            p.dgKod = document.getElementById('l-dg-kod').value.trim();
-            p.anamneza = document.getElementById('l-anamneza').value.trim();
-            p.lokalni = document.getElementById('l-lokalni').value.trim();
-            p.rom = document.getElementById('l-rom').value.trim();
-            p.mmt = document.getElementById('l-mmt').value.trim();
-            p.refleksi = document.getElementById('l-refleksi').value.trim();
-            p.antropometrija = document.getElementById('l-antropometrija').value.trim();
-
-            p.globalStatus = "Lekarski pregled";
-            dbCommit();
-            renderujProtokolListu();
-            alert("Lekarski izveštaj i plan rehabilitacije uspešno validirani i potpisani.");
-}
+        }
         
         .day-box input[type="checkbox"] { 
             width: 20px; 
             height: 20px; 
             cursor: pointer; 
             accent-color: var(--hospital-blue);
-
-        // EMNG SUB-ROUTINE
-        function sacuvajEmngIzvestaj() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if(!p) return alert("Nema izabranog pacijenta!");
-
-            p.emngUputnaInd = document.getElementById('e-uputna-ind').value.trim();
-            p.emngAparat = document.getElementById('e-aparat').value.trim();
-            p.emngNcs = document.getElementById('e-ncs').value.trim();
-            p.emngEmg = document.getElementById('e-emg').value.trim();
-            p.emngZakljucak = document.getElementById('e-zakljucak').value.trim();
-
-            dbCommit();
-            alert("EMNG nalaz uspešno pridodat i zatvoren u kabinetu elektrofiziologije.");
-}
+        }
         
         .day-box.checked-day {
             background-color: #f0fdf4;
             border-color: #bbf7d0;
+        }
 
-        // TERAPEUT BLOCK MANAGEMENT (3-STATE ATTENDANCE ENGINE)
-        function renderujTerapeutskuTabelu(p) {
-            const tbody = document.querySelector('#table-terapeut-evidencija tbody');
-            tbody.innerHTML = "";
-
-            if(p.planTerapija.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Pacijent nema propisane fizikalne kure od strane fizijatra.</td></tr>`;
-                return;
-            }
-
-            p.planTerapija.forEach(t => {
-                const tr = document.createElement('tr');
-                let matrixHtml = `<div class="attendance-matrix">`;
-                const statesArr = p.matricaPrisustva[t.naziv] || Array(t.seanse).fill("empty");
-
-                let brojacOdrano = 0;
-
-                for (let dayIdx = 0; dayIdx < t.seanse; dayIdx++) {
-                    const st = statesArr[dayIdx] || "empty";
-                    let stateClass = "";
-                    if (st === "done") { stateClass = "done"; brojacOdrano++; }
-                    if (st === "excused") stateClass = "excused";
-                    if (st === "unexcused") stateClass = "unexcused";
-
-                    matrixHtml += `
-                        <div class="day-node">
-                            <span>Dan ${dayIdx+1}</span>
-                            <div class="state-indicator ${stateClass}"></div>
-                            <div class="btn-group-states">
-                                <button title="Sprovedeno" class="btn-state" style="background:var(--accent-success); color:#fff;" onclick="promeniStatusPrisustva('${p.id}', '${t.naziv}', ${dayIdx}, 'done')">✓</button>
-                                <button title="Opravdano" class="btn-state" style="background:var(--accent-warn); color:#000;" onclick="promeniStatusPrisustva('${p.id}', '${t.naziv}', ${dayIdx}, 'excused')">O</button>
-                                <button title="Neopravdano" class="btn-state" style="background:var(--accent-danger); color:#fff;" onclick="promeniStatusPrisustva('${p.id}', '${t.naziv}', ${dayIdx}, 'unexcused')">X</button>
-                            </div>
-                        </div>
-                    `;
-                }
-                matrixHtml += `</div>`;
-
-                tr.innerHTML = `
-                    <td style="width:250px;"><strong>${t.naziv}</strong></td>
-                    <td>${matrixHtml}</td>
-                    <td style="width:120px; font-weight:bold; text-align:center; font-size:14px;"><span style="color:var(--accent-success);">${brojacOdrano}</span> / ${t.seanse}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-}
-
+        /* FISKALNI DISPLEJ */
+        .invoice-layout { display: flex; gap: 20px; align-items: flex-start; }
+        .tape-bill { width: 290px; background: #fff; border: 1px dashed #000; padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #000; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         /* FISKALNI LOGIČKI BLOK */
         .invoice-layout { 
             display: flex; 
             gap: 20px; 
             align-items: flex-start; 
-        function promeniStatusPrisustva(pid, thNaziv, dayIdx, noviStatus) {
-            const p = bolnicaDB.find(x => x.id === pid);
-            if(p && p.matricaPrisustva[thNaziv]) {
-                p.matricaPrisustva[thNaziv][dayIdx] = noviStatus;
-                p.globalStatus = "Terapijski Blok";
-                dbCommit();
-                renderujTerapeutskuTabelu(p);
-            }
-}
+        }
         
         .tape-bill { 
             width: 310px; 
@@ -1092,111 +444,44 @@
             font-size: 12px; 
             color: #000; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-
-        // FINANCIAL SPECIFICATION CALCULATOR
-        function preracunajFinansije() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if (!p) return;
-
-            const model = document.getElementById('b-model-fond').value;
-            const extraSmestaj = parseFloat(document.getElementById('b-trosak-smestaj').value) || 0;
-            const extraPregledi = parseFloat(document.getElementById('b-trosak-pregledi').value) || 0;
-
-            const tbody = document.querySelector('#table-blagajna-obracun tbody');
-            tbody.innerHTML = "";
-
-            let total = 0;
-            let stavke = [];
-
-            // Izračunaj realno odrađene terapije za privatnike ili participaciju
-            p.planTerapija.forEach(t => {
-                const realizovano = (p.matricaPrisustva[t.naziv] || []).filter(s => s === 'done').length;
-                if(realizovano > 0) {
-                    let cena = CENOVNIK.Terapija;
-                    if(model === "RFZO") cena = 0;
-                    if(model === "Participacija") cena = CENOVNIK.Terapija * 0.15; // 15% učešće
-                    
-                    stavke.push({ ime: `Realizovano: ${t.naziv}`, q: realizovano, jc: cena, sub: realizovano * Buffer.from ? 0 : cena * realizovano });
-                }
-            });
-
-            // Lekarski pregled
-            let cenaPregleda = CENOVNIK.Pregled;
-            if(model === "RFZO") cenaPregleda = 0;
-            if(model === "Participacija") cenaPregleda = CENOVNIK.Pregled * 0.10;
-            stavke.push({ ime: `Lekarski specijalistički pregled (${p.tipPosete})`, q: 1, jc: cenaPregleda, sub: cenaPregleda });
-
-            // EMNG ako postoji zaključak
-            if(p.emngZakljucak) {
-                let cenaEmng = CENOVNIK.EMNG;
-                if(model === "RFZO") cenaEmng = 0;
-                stavke.push({ ime: "Neurofiziološki pregled EMNG", q: 1, jc: cenaEmng, sub: cenaEmng });
-            }
-
-            // Dodatni unosi
-            if(extraSmestaj > 0) stavke.push({ ime: "Smeštaj / Doplate stacionarnog bloka i nege", q: 1, jc: extraSmestaj, sub: extraSmestaj });
-            if(extraPregledi > 0) stavke.push({ ime: "Vanredni konsultativni pregledi", q: 1, jc: extraPregledi, sub: extraPregledi });
-
-            stavke.forEach(st => {
-                let sSum = st.q * st.jc;
-                total += sSum;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${st.ime}</td><td>${st.q}</td><td>${st.jc.toFixed(2)}</td><td>${sSum.toFixed(2)}</td>`;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('b-faktura-total').innerText = total.toFixed(2);
-}
+        }
         
-        .tape-bill .center { text-align: center; font-weight: bold; }
+.tape-bill .center { text-align: center; font-weight: bold; }
+        .tape-bill .separator { border-top: 1px dashed #000; margin: 6px 0; }
         .tape-bill .separator { border-top: 1px dashed #000; margin: 8px 0; }
-        .tape-bill .row-flex { display: flex; justify-content: space-between; }
+.tape-bill .row-flex { display: flex; justify-content: space-between; }
 
+        /* ZVANIČNA PRINT STRUKTURA */
         /* EMNG PARAMETRIZOVANI TABELARNI PREGLED */
         .emng-param-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 8px;
             font-size: 12px;
-
-        function faktursiISacuvajFinansije() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if(!p) return alert("Greška!");
-
-            p.bModelFond = document.getElementById('b-model-fond').value;
-            p.bTrosakSmestaj = parseFloat(document.getElementById('b-trosak-smestaj').value) || 0;
-            p.bTrosakPregledi = parseFloat(document.getElementById('b-trosak-pregledi').value) || 0;
-            p.bPlaceno = true;
-
-            dbCommit();
-            alert("Finansijski račun uspešno zatvoren, proknjižen i spreman za fiskalno štampanje.");
-}
+        }
         .emng-param-table th, .emng-param-table td {
             border: 1px solid var(--border-color);
             padding: 6px 8px;
             text-align: center;
-
-        // PROTOKOL / ARHIVA / FINAL DISCHARGE
-        function finalizujOtpusnuListuArhiva() {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if(!p) return alert("Greška!");
-
-            p.oIshod = document.getElementById('o-ishod').value;
-            p.oZavrsniStatus = document.getElementById('o-zavrsni-status').value.trim();
-            p.oPreporuka = document.getElementById('o-preporuka').value.trim();
-            p.globalStatus = "Otpušten";
-
-            dbCommit();
-            renderujProtokolListu();
-            osveziPacijentFokus();
-            alert("Karton pacijenta uspešno zatvoren u centralnoj arhivi. Generisan je finalni protokol.");
-}
+        }
         .emng-param-table th { background: #f8fafc; font-weight: bold; }
 
         /* PROGRAMSKI ENGINE ZA ZVANIČNU SREĐENU ŠTAMPU */
-        @media print {
-            body * { display: none !important; }
-            #print-engine-buffer, #print-engine-buffer * { display: block !important; }
+@media print {
+body * { display: none !important; }
+#print-engine-buffer, #print-engine-buffer * { display: block !important; }
+            #print-engine-buffer { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; font-family: 'Times New Roman', Times, serif; padding: 15mm; }
+            .p-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; font-size: 12px; }
+            .p-doc-title { text-align: center; font-size: 20px; font-weight: bold; margin: 25px 0; text-transform: uppercase; text-decoration: underline; }
+            .p-info-grid { border: 1px solid #000; padding: 10px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; }
+            .p-text-block { margin-bottom: 20px; }
+            .p-text-block h3 { font-size: 13px; border-bottom: 1px solid #000; padding-bottom: 2px; margin-bottom: 6px; text-transform: uppercase; }
+            .p-text-block p { font-size: 12px; text-align: justify; line-height: 1.4; text-indent: 10px; }
+            .p-signatures { display: flex; justify-content: space-between; margin-top: 50px; font-size: 12px; }
+            .p-line { border-top: 1px solid #000; width: 220px; text-align: center; padding-top: 4px; }
+            .p-kitchen-card { border: 2px solid #000; padding: 20px; width: 100%; max-width: 400px; margin: 0 auto; font-family: Arial, sans-serif; }
+            .p-kitchen-card h2 { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 15px; }
+            .p-kitchen-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
             #print-engine-buffer { 
                 position: absolute; 
                 left: 0; 
@@ -1268,66 +553,7 @@
                 margin: 40px auto; 
                 font-family: Arial, sans-serif; 
                 background: #fff;
-        // PROFESSIONAL A4 REPORT ARCHITECTURE (PRINT ROUTER ENGINE)
-        function izvrsiZvanicnuA4Stampu(tipDokumenta) {
-            const p = bolnicaDB.find(x => x.id === activePatientId);
-            if (!p) return alert("Nema selektovanog pacijenta za štampu!");
-
-            const engine = document.getElementById('print-engine-output');
-            engine.innerHTML = ""; // Očisti prethodni print bafer
-
-            const page = document.createElement('div');
-            page.className = "a4-page";
-
-            let headerHtml = `
-                <div class="a4-header">
-                    <div class="a4-hospital-info">
-                        SPECIJALNA BOLNICA ZA FIZIKALNU MEDICINU I REHABILITACIJU<br>
-                        ZAVOD ZA BALNEOKLIMATOLOGIJU I NEUROLOGIJU<br>
-                        Aranđelovac, Srbija | Tel: 034/711-XXX
-                    </div>
-                    <div style="text-align:right; font-size:11px; font-weight:bold;">
-                        Sistem: MedCore Rehab Enterprise v5.5<br>
-                        Datum izdavanja: 23.06.2026.
-                    </div>
-                </div>
-            `;
-
-            let stickerHtml = `
-                <div class="a4-patient-sticker">
-                    <div><strong>Pacijent:</strong> ${p.ime} ${p.prezime}</div>
-                    <div><strong>Broj Istorije Bolesti:</strong> ${p.id}</div>
-                    <div><strong>JMBG:</strong> ${p.jmbg}</div>
-                    <div><strong>Tip smeštaja:</strong> ${p.smestaj} (Soba/Krevet: ${p.kuhSoba})</div>
-                    <div style="grid-column: span 2;"><strong>Uputna dijagnoza na prijemu:</strong> ${p.uputnaDg || 'Nije navedena'}</div>
-                </div>
-            `;
-
-            let sadrzajHtml = "";
-            let potpisDoktora = "dr Ognjen Filipović, spec. fizijatar";
-
-            if (tipDokumenta === 'pult') {
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">PRIJEMNI KARTON I ISHRANA (KUHINJSKI BLOK)</div>` + stickerHtml + `
-                    <div class="a4-section">
-                        <h3>Administrativni status i Smeštaj</h3>
-                        <p>Pacijent je primljen u statusu: <strong>${p.smestaj}</strong>.</p>
-                        <p>Raspoređen na odeljenje/sobu: <strong>${p.kuhSoba}</strong>.</p>
-                    </div>
-                    <div class="a4-section">
-                        <h3>Režim Ishrane (Restoranski blok bolnice)</h3>
-                        <table class="a4-table">
-                            <tr><th>Kategorija</th><th>Zavedeni Režim i Uputstvo</th></tr>
-                            <tr><td><strong>Propisana Dijeta:</strong></td><td><strong>${p.kuhDijeta}</strong></td></tr>
-                            <tr><td><strong>Alergeni i Kontraindikacije:</strong></td><td><span style="color:red; font-weight:bold;">${p.kuhAlergije}</span></td></tr>
-                        </table>
-                    </div>
-                    <div class="a4-section">
-                        <h3>Smernice i Trijaža Pulta</h3>
-                        <p>Pacijent elektronski prosleđen na: <strong>${p.uputLekar}</strong> sa prioritetom <strong>${p.uputHitnost}</strong>.</p>
-                    </div>
-                `;
-                potpisDoktora = "Glavni medicinski tehničar pulta";
-}
+            }
             .p-kitchen-card h2 { 
                 text-align: center; 
                 font-size: 20px;
@@ -1336,31 +562,7 @@
                 padding-bottom: 12px; 
                 margin-bottom: 18px; 
                 text-transform: uppercase;
-            else if (tipDokumenta === 'lekar') {
-                let thRows = "";
-                p.planTerapija.forEach(t => { thRows += `<tr><td><strong>${t.naziv}</strong></td><td>${t.seanse} seansi</td></tr>`; });
-                
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">IZVEŠTAJ LEKARA SPECIJALISTE - ${p.tipPosete.toUpperCase()}</div>` + stickerHtml + `
-                    <div class="a4-section"><h3>Anamnestički podaci</h3><p>${p.anamneza || 'Nema unosa u anamnezi.'}</p></div>
-                    <div class="a4-section"><h3>Objektivan fizikalni nalaz</h3><p>${p.lokalni || 'Nema unosa.'}</p></div>
-                    <div class="a4-section"><h3>Funkcionalni status (ROM i MMT)</h3>
-                        <p><strong>Obim pokreta (ROM):</strong> ${p.rom || '/'}</p>
-                        <p><strong>Manuelni mišićni test (MMT):</strong> ${p.mmt || '/'}</p>
-                    </div>
-                    ${p.tipPosete === "Prvi pregled" ? `
-                    <div class="a4-section"><h3>Neurološki i antropometrijski status</h3>
-                        <p><strong>Refleksi/Senzibilitet:</strong> ${p.refleksi || '/'}</p>
-                        <p><strong>Antropometrija:</strong> ${p.antropometrija || '/'}</p>
-                    </div>` : ''}
-                    <div class="a4-section"><h3>Utvrđena dijagnoza</h3><p style="font-size:14px; font-weight:bold;">MKB-10: ${p.dgKod || 'Nije klasifikovana'}</p></div>
-                    <div class="a4-section"><h3>Propisan Balneo-Fizikalni Program</h3>
-                        <table class="a4-table">
-                            <thead><tr><th>Naziv propisane procedure</th><th>Ukupan broj planiranih seansi</th></tr></thead>
-                            <tbody>${thRows || '<tr><td colspan="2">Nema propisanih terapija.</td></tr>'}</tbody>
-                        </table>
-                    </div>
-                `;
-}
+            }
             .p-kitchen-row { 
                 display: flex; 
                 justify-content: space-between; 
@@ -1368,15 +570,7 @@
                 font-size: 14px; 
                 border-bottom: 1px solid #eee;
                 padding-bottom: 4px;
-            else if (tipDokumenta === 'emng') {
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">NALAZ I IZVEŠTAJ KABINETA ZA ELEKTROMIONEUROGRAFIJU (EMNG)</div>` + stickerHtml + `
-                    <div class="a4-section"><h3>Indikacije i Aparat</h3><p><strong>Uputna sumnja:</strong> ${p.emngUputnaInd || '/'}</p><p><strong>Aparat:</strong> ${p.emngAparat}</p></div>
-                    <div class="a4-section"><h3>1. Neurografija (NCS - Ispitivanje brzina provodljivosti nerava)</h3><p style="white-space: pre-wrap;">${p.emngNcs || 'Nalaz uredan.'}</p></div>
-                    <div class="a4-section"><h3>2. Miografija (EMG - Iglični pregled mišića)</h3><p style="white-space: pre-wrap;">${p.emngEmg || 'Nalaz uredan.'}</p></div>
-                    <div class="a4-section" style="border: 2px solid #000; padding:10px; background:#f4f4f4;"><h3>ZAKLJUČAK NEUROFIFIZOLOŠKOG PREGLEDA:</h3><p style="font-size:13px; font-weight:bold;">${p.emngZakljucak || 'Nema elemenata za patološke promene.'}</p></div>
-                `;
-                potpisDoktora = "dr Ognjen Filipović, spec. neurofiziolog";
-}
+            }
             .p-kitchen-row strong { font-size: 13px; text-transform: uppercase; color: #333; }
             .p-kitchen-box-diet {
                 background: #f4f4f5;
@@ -1386,224 +580,568 @@
                 font-weight: bold;
                 text-align: center;
                 margin: 15px 0;
-            else if (tipDokumenta === 'terapeut') {
-                let rows = "";
-                p.planTerapija.forEach(t => {
-                    const st = p.matricaPrisustva[t.naziv] || [];
-                    let odr = st.filter(x => x === 'done').length;
-                    let txt = st.map((x, i) => `D${i+1}:${x === 'done' ? '✓' : x === 'excused' ? 'O' : x === 'unexcused' ? 'X' : '/'}`).join(" | ");
-                    rows += `<tr><td><strong>${t.naziv}</strong></td><td><span style="font-size:10px;">${txt}</span></td><td><strong>${odr} / ${t.seanse}</strong></td></tr>`;
-                });
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">TERAPEUTSKI KARTON SPROVOĐENJA FIZIKALNOG TRETMANA</div>` + stickerHtml + `
-                    <p style="margin-bottom:10px;">Uvid u realizaciju balneo-fizikalnih procedura i evidenciju prisutnosti u terapeutskom bloku:</p>
-                    <table class="a4-table">
-                        <thead><tr><th>Fizikalna procedura</th><th>Dnevnik rada i realizacije po danima</th><th>Ukupno odrađeno</th></tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                    <p style="font-size:11px; margin-top:15px; color:#555;">Legenda: ✓ - Sprovedena seansa | O - Opravdan izostanak | X - Neopravdan izostanak</p>
-                `;
-                potpisDoktora = "Glavni fizioterapeut Zavoda";
+            }
 }
-        }
-    </style>
+</style>
 </head>
 <body>
-            else if (tipDokumenta === 'racun') {
-                let rows = "";
-                let total = 0;
-                
-                p.planTerapija.forEach(t => {
-                    const realizovano = (p.matricaPrisustva[t.naziv] || []).filter(s => s === 'done').length;
-                    if(realizovano > 0) {
-                        let jc = p.bModelFond === "RFZO" ? 0 : p.bModelFond === "Participacija" ? CENOVNIK.Terapija * 0.15 : CENOVNIK.Terapija;
-                        let sub = realizovano * jc; total += sub;
-                        rows += `<tr><td>Sprovedeno: ${t.naziv}</td><td>${realizovano}</td><td>${jc.toFixed(2)}</td><td>${sub.toFixed(2)}</td></tr>`;
-                    }
-                });
 
-    <header>
-        <div class="logo-area">
+<header>
+<div class="logo-area">
+            <h1>MedCore Clinical HIS <span>Enterprise v9.0</span></h1>
             <h1>MedCore Clinical HIS <span>Enterprise Unified Edition v9.4</span></h1>
-        </div>
-        <div class="main-nav">
-            <button class="nav-btn active" id="tab-link-pult" onclick="navigate('pult')">🏢 Šalter i Prijem</button>
-            <button class="nav-btn" id="tab-link-lekar" onclick="navigate('lekar')">🩺 Fizijatar i Ambulanta</button>
-            <button class="nav-btn" id="tab-link-konsultant" onclick="navigate('konsultant')">🧠 Konsultant i EMNG</button>
-            <button class="nav-btn" id="tab-link-terapija" onclick="navigate('terapija')">📆 Evidencija Terapija</button>
-            <button class="nav-btn" id="tab-link-kuhinja" onclick="navigate('kuhinja')">🍳 Kuhinjska Karta</button>
-            <button class="nav-btn" id="tab-link-blagajna" onclick="navigate('blagajna')">🧾 Blagajna i Račun</button>
-            <button class="nav-btn" id="tab-link-otpust" onclick="navigate('otpust')">📜 Otpusna Lista</button>
-        </div>
-    </header>
-                let cPregled = p.bModelFond === "RFZO" ? 0 : p.bModelFond === "Participacija" ? CENOVNIK.Pregled * 0.10 : CENOVNIK.Pregled;
-                total += cPregled;
-                rows += `<tr><td>Lekarski specijalistički pregled</td><td>1</td><td>${cPregled.toFixed(2)}</td><td>${cPregled.toFixed(2)}</td></tr>`;
+</div>
+<div class="main-nav">
+<button class="nav-btn active" id="tab-link-pult" onclick="navigate('pult')">🏢 Šalter i Prijem</button>
+@@ -139,46 +542,46 @@ <h1>MedCore Clinical HIS <span>Enterprise v9.0</span></h1>
 
-    <div class="workspace-grid">
-        <aside class="patient-sidebar">
+<div class="workspace-grid">
+<aside class="patient-sidebar">
+            <div class="sidebar-title">Pacijenti u Protokolu</div>
             <div class="sidebar-title">Pacijenti u Protokolu bolnice</div>
-            <div class="search-container">
+<div class="search-container">
+                <input type="text" id="patient-filter" placeholder="🔍 Brzo filtriranje po JMBG / Imenu..." oninput="triggerFilter()">
                 <input type="text" id="patient-filter" placeholder="🔍 Filtriraj JMBG / Protokol / Ime..." oninput="triggerFilter()">
-            </div>
-            <div class="patient-list-flow" id="injected-patient-list">
-                </div>
+</div>
+<div class="patient-list-flow" id="injected-patient-list">
+</div>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px; margin-top: 10px;" onclick="injectDemoData()">⚡ Učitaj Kompletan CMT Dosije</button>
             <button class="btn btn-secondary" style="font-size: 11px; padding: 8px; margin-top: 10px; width: 100%;" onclick="injectDemoData()">⚡ Učitaj Kompletan CMT Klinički Slučaj</button>
-        </aside>
-                if(p.emngZakljucak) {
-                    let cEmng = p.bModelFond === "RFZO" ? 0 : CENOVNIK.EMNG; total += cEmng;
-                    rows += `<tr><td>Neurofiziološki pregled EMNG</td><td>1</td><td>${cEmng.toFixed(2)}</td><td>${cEmng.toFixed(2)}</td></tr>`;
-                }
+</aside>
 
-        <main class="main-workspace">
-            <div class="active-banner" id="focus-banner-patient">
+<main class="main-workspace">
+<div class="active-banner" id="focus-banner-patient">
+                <div><strong>SISTEM UKLJUČEN:</strong> Izaberite pacijenta iz leve kolone ili kreirajte novi karton na šalteru.</div>
                 <div><strong>SISTEM LOGOVAN:</strong> Izaberite aktivni protokol sa leve strane ili otvorite novi karton na šalteru za prijem.</div>
-            </div>
-                if(p.bTrosakSmestaj > 0) { total += p.bTrosakSmestaj; rows += `<tr><td>Smeštaj / Doplate stacionarnog bloka</td><td>1</td><td>${p.bTrosakSmestaj.toFixed(2)}</td><td>${p.bTrosakSmestaj.toFixed(2)}</td></tr>`; }
-                if(p.bTrosakPregledi > 0) { total += p.bTrosakPregledi; rows += `<tr><td>Vanredni konsultativni pregledi</td><td>1</td><td>${p.bTrosakPregledi.toFixed(2)}</td><td>${p.bTrosakPregledi.toFixed(2)}</td></tr>`; }
+</div>
 
-            <section id="pane-pult" class="clinical-section active">
+<section id="pane-pult" class="clinical-section active">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Otvaranje novog bolničkog protokola</h2>
                 <h2 style="color: var(--accent-blue); margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Otvaranje novog bolničkog protokola i klasifikacija</h2>
-                <form id="form-registration" onsubmit="executeRegistration(event)">
-                    <div class="grid-row-3">
-                        <div class="field-group"><label>Broj Protokola / Kartona</label><input type="text" id="reg-id" required placeholder="Npr. 2026-F409"></div>
+<form id="form-registration" onsubmit="executeRegistration(event)">
+<div class="grid-row-3">
+<div class="field-group"><label>Broj Protokola / Kartona</label><input type="text" id="reg-id" required placeholder="Npr. 2026-F409"></div>
+                        <div class="field-group"><label>Ime Pacijenta</label><input type="text" id="reg-ime" required></div>
+                        <div class="field-group"><label>Prezime Pacijenta</label><input type="text" id="reg-prezime" required></div>
                         <div class="field-group"><label>Ime Pacijenta</label><input type="text" id="reg-ime" required placeholder="Unesite ime"></div>
                         <div class="field-group"><label>Prezime Pacijenta</label><input type="text" id="reg-prezime" required placeholder="Unesite prezime"></div>
-                    </div>
-                    <div class="grid-row-3">
+</div>
+<div class="grid-row-3">
+                        <div class="field-group"><label>JMBG</label><input type="text" id="reg-jmbg" required maxlength="13"></div>
                         <div class="field-group"><label>Matični Broj (JMBG)</label><input type="text" id="reg-jmbg" required maxlength="13" placeholder="Upišite 13 cifara"></div>
-                        <div class="field-group">
+<div class="field-group">
+                            <label>Starosni status</label>
                             <label>Starosna Kategorija</label>
-                            <select id="reg-starost" onchange="toggleMinorFields(this.value)">
-                                <option value="Punoletni">Punoletno lice</option>
+<select id="reg-starost" onchange="toggleMinorFields(this.value)">
+<option value="Punoletni">Punoletno lice</option>
+                                <option value="Maloletni">Maloletno lice (Potreban pratilac)</option>
                                 <option value="Maloletni">Maloletno lice (Zahteva potpisnika i pratioca)</option>
-                            </select>
-                        </div>
-                        <div class="field-group"><label>Uputna Dijagnoza (MKB-10)</label><input type="text" id="reg-uputdg" placeholder="Npr. G60.2"></div>
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">FINANSIJSKA SPECIFIKACIJA TROŠKOVA I RAČUN BR. ${p.id}/26</div>` + stickerHtml + `
-                    <div class="a4-section">
-                        <p><strong>Model finansiranja:</strong> ${p.bModelFond}</p>
-                        <p><strong>Status plaćanja:</strong> ${p.bPlaceno ? "PROKNJIŽENO / PLAĆENO" : "NURADAK / ČEKA REALIZACIJU"}</p>
-                        <table class="a4-table">
-                            <thead><tr><th>Opis stavke usluge</th><th>Količina</th><th>Jedinična cena (RSD)</th><th>Ukupno (RSD)</th></tr></thead>
-                            <tbody>${rows}</tbody>
-                        </table>
-                        <h2 style="text-align:right; margin-top:20px; font-size:16px;">UKUPNO ZA NAPLATU: ${total.toFixed(2)} RSD</h2>
-                   </div>
-                `;
-                potpisDoktora = "Šef računovodstva / Blagajnik";
-            }
-            else if (tipDokumenta === 'komplet') {
-                let thSve = "";
-                p.planTerapija.forEach(t => {
-                    let odr = (p.matricaPrisustva[t.naziv] || []).filter(d => d === 'done').length;
-                    thSve += `<li>${t.naziv} (Sprovedeno: <strong>${odr} od ${t.seanse}</strong> seansi)</li>`;
-                });
+</select>
+</div>
+<div class="field-group"><label>Uputna Dijagnoza (MKB-10)</label><input type="text" id="reg-uputdg" placeholder="Npr. G60.2"></div>
+</div>
 
+                    <div id="minor-protocol-box" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                        <h4 style="color: var(--warning-amber); margin-bottom: 10px;">Podaci o roditelju / staratelju (Pratilac maloletnog lica)</h4>
                     <div id="minor-protocol-box" style="display: none; background: #fff7ed; border: 1px solid #ffedd5; padding: 18px; border-radius: 6px; margin-bottom: 18px;">
                         <h4 style="color: var(--warning-amber); margin-bottom: 12px; font-weight: bold; text-transform: uppercase; font-size: 11px;">Podaci o roditelju / staratelju (Pratilac maloletnog lica)</h4>
-                        <div class="grid-row-3">
+<div class="grid-row-3">
+                            <div class="field-group"><label>Ime i Prezime Pratioca</label><input type="text" id="reg-prat-naziv"></div>
+                            <div class="field-group"><label>Srodstveni odnos</label><input type="text" id="reg-prat-srodstvo" placeholder="Npr. Majka / Otac"></div>
+                            <div class="field-group"><label>JMBG / Br. Lične Karte</label><input type="text" id="reg-prat-jmbg"></div>
                             <div class="field-group"><label>Ime i Prezime Pratioca</label><input type="text" id="reg-prat-naziv" placeholder="Ime i prezime roditelja"></div>
                             <div class="field-group"><label>Srodstveni odnos</label><input type="text" id="reg-prat-srodstvo" placeholder="Npr. Majka / Otac / Staratelj"></div>
                             <div class="field-group"><label>JMBG / Broj lične karte</label><input type="text" id="reg-prat-jmbg" placeholder="Upišite identifikacioni broj"></div>
-                        </div>
-                page.innerHTML = headerHtml + `<div class="a4-doc-title">OTPUSNA LISTA I CENTRALNI PROTOKOL REHABILITACIJE</div>` + stickerHtml + `
-                    <div style="border: 1px solid #000; padding:10px; margin-bottom:15px;">
-                        <strong>Inicijalni lekarski status na prijemu:</strong>
-                        <p><strong>Dijagnoza:</strong> ${p.dgKod || '/'}</p>
-                        <p><strong>Funkcionalni MMT / ROM prijemni:</strong> ${p.mmt || '/'} | ${p.rom || '/'}</p>
-                   </div>
-                    ${p.emngZakljucak ? `<div class="a4-section"><h3>Priložena neurofiziološka dijagnostika (EMNG)</h3><p><em>${p.emngZakljucak}</em></p></div>` : ''}
-                    <div class="a4-section">
-                        <h3>Realizovane balneo-fizikalne procedure i kure</h3>
-                        <ul>${thSve || 'Nema zabeleženih terapija.'}</ul>
-                    </div>
-                    <div class="a4-section" style="border-top:2px solid #000; padding-top:10px; margin-top:20px;">
-                        <h3>EVALUACIJA REHABILITACIONOG CIKLUSA I OTPUST PACIJENTA</h3>
-                        <p><strong>Ishod lečenja:</strong> <strong>${p.oIshod || 'Umereno poboljšanje statusa.'}</strong></p>
-                        <p><strong>Završni funkcionalni MMT i ROM na otpustu:</strong> ${p.oZavrsniStatus || 'Zadovoljavajući.'}</p>
-                        <p style="margin-top:10px;"><strong>Preporuka za kućno lečenje i nastavak radne aktivnosti:</strong></p>
-                        <p style="font-style:italic;">${p.oPreporuka || 'Nastavak medicinske gimnastike u kućnim uslovima, izbegavati nagle rotacije trupa i podizanje tereta.'}</p>
-                    </div>
-                `;
-            }
+</div>
+</div>
 
-                    <button type="submit" class="btn btn-success">💾 Otvori istoriju bolesti i zavedi u protokol</button>
-                </form>
-            </section>
+@@ -187,478 +590,32 @@ <h4 style="color: var(--warning-amber); margin-bottom: 10px;">Podaci o roditelju
+</section>
 
-            <section id="pane-lekar" class="clinical-section">
+<section id="pane-lekar" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Specijalistički lekarski pregled i nalazi fizijatra</h2>
                 <h2 style="color: var(--accent-blue); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Specijalistički lekarski pregled i nalazi fizijatra</h2>
-                
-                <div class="template-wrapper">
-                    <div class="template-heading">Brzi klinički šabloni (Unos jednim klikom):</div>
+
+<div class="template-wrapper">
+<div class="template-heading">Brzi klinički šabloni (Unos jednim klikom):</div>
+                    <button type="button" class="t-btn" onclick="injectTemplate('anamneza', 'urti')">Anamneza: Akutna respiratorna infekcija (Prehlada)</button>
+                    <button type="button" class="t-btn" onclick="injectTemplate('status', 'uredan')">Status: Uredan objektivni fizikalni status</button>
+                    <button type="button" class="t-btn" onclick="injectTemplate('amb', 'cmt')">🧬 Integrisana CMT Anamneza i Status</button>
                     <button type="button" class="t-btn" onclick="injectTemplate('lekar', 'urti')">Anamneza: Akutna respiratorna infekcija (Prehlada)</button>
                     <button type="button" class="t-btn" onclick="injectTemplate('lekar', 'uredan')">Status: Uredan objektivni fizikalni status po sistemima</button>
                     <button type="button" class="t-btn" onclick="injectTemplate('lekar', 'cmt')">🧬 Integrisana CMT Anamneza, Hromozomski Status i Deformiteti</button>
-            // Zajednički A4 potpis i pečat bolnice
-            const footer = document.createElement('div');
-            footer.className = "a4-footer";
-            footer.innerHTML = `
-                <div style="font-size:10px; color:#333;">M.P.<br>(Pečat Specijalne bolnice)</div>
-                <div class="a4-signature-box">
-                    <div class="a4-line">${potpisDoktora}</div>
-               </div>
-            `;
-            page.appendChild(footer);
-            engine.appendChild(page);
+</div>
 
-                <div class="grid-row-2">
+<div class="grid-row-2">
+                    <div class="field-group"><label>Anamneza (Sadašnje tegobe i klinička istorija)</label><textarea id="md-anamneza" rows="8"></textarea></div>
+                    <div class="field-group"><label>Objektivan fizikalni nalaz (Fizikalni status po sistemima)</label><textarea id="md-status" rows="8"></textarea></div>
                     <div class="field-group"><label>Anamneza (Sadašnje tegobe, istorija bolesti, nasledni faktori)</label><textarea id="md-anamneza" rows="9" placeholder="Upišite anamnestičke podatke pacijenta..."></textarea></div>
                     <div class="field-group"><label>Objektivan fizikalni nalaz (Fizikalni status, lokomotorni aparat, refleksi)</label><textarea id="md-status" rows="9" placeholder="Upišite status praesens..."></textarea></div>
-                </div>
-                <div class="grid-row-2">
+</div>
+<div class="grid-row-2">
+                    <div class="field-group"><label>Konačna klinička dijagnoza (Šifra i Naziv)</label><input type="text" id="md-dg" placeholder="G60.2 - Neuropathia cum ataxia hereditaria"></div>
+                    <div class="field-group"><label>Ordinirana terapija / Procedure (Za slanje blagajni)</label><input type="text" id="md-terapija-opis" placeholder="Npr. Kineziterapija, Elektroterapija"></div>
                     <div class="field-group"><label>Konačna klinička dijagnoza (MKB Šifra i Naziv)</label><input type="text" id="md-dg" placeholder="Npr. G60.2 - Neuropathia cum ataxia hereditaria"></div>
                     <div class="field-group"><label>Ordinirana terapija / Plan fizikalnih procedura (Za slanje blagajni i terapeutu)</label><input type="text" id="md-terapija-opis" placeholder="Npr. Kineziterapija za CMT (Korektivni program)"></div>
-                </div>
-            // Poziv sistemskog drajvera za štampanje
-            window.print();
-        }
+</div>
 
+                <div style="margin-top: 10px; display: flex; gap: 8px;">
                 <div style="margin-top: 15px; display: flex; gap: 8px;">
-                    <button class="btn btn-success" onclick="commitLekarData()">💾 Verifikuj, potpiši i sačuvaj nalaz</button>
-                    <button class="btn btn-secondary" onclick="executePrint('lekar')">🖨️ Štampaj nalaz lekara (A4)</button>
+<button class="btn btn-success" onclick="commitLekarData()">💾 Verifikuj, potpiši i sačuvaj nalaz</button>
+<button class="btn btn-secondary" onclick="executePrint('lekar')">🖨️ Štampaj nalaz lekara (A4)</button>
+</div>
+</section>
+
+<section id="pane-konsultant" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Konsultativni pregled i Elektromioneurografija (EMNG)</h2>
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Konsultativni pregled i Elektromioneurografija (EMNG)</h2>
+
+<div class="template-wrapper">
+                    <div class="template-heading">Specijalistički neurološki šabloni:</div>
+                    <button type="button" class="t-btn" onclick="injectTemplate('emng', 'cmt_emng')">🧬 EMNG Izveštaj: Hromozomska Duplikacija PMP22 (CMT Tip 1A)</button>
+                    <button type="button" class="t-btn" onclick="injectTemplate('emng', 'uredan_emng')">EMNG Izveštaj: Uredan neurološki nalaz provodljivosti</button>
+                </div>
+
+                <div class="grid-row-2">
+                    <div class="field-group">
+                        <label>Specijalistički konsultativni nalaz neurologije / fizijatrije</label>
+                        <textarea id="kons-izvestaj" rows="10" placeholder="Unesite zaključak konsultativnog pregleda..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label>EMNG Parametri (Brzine provodljivosti, Latence, Amplitude)</label>
+                        <textarea id="kons-emng" rows="10" placeholder="Unesite detaljnu tabelu brzina motornih i senzitivnih nerava (N. Peroneus, N. Tibialis, N. Suralis)..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; display: flex; gap: 8px;">
+                    <button class="btn btn-success" onclick="commitKonsultantData()">💾 Verifikuj, potpiši i upiši EMNG izveštaj</button>
+                    <button class="btn btn-secondary" onclick="executePrint('emng')">🖨️ Štampaj EMNG i Konsultativni nalaz (A4)</button>
                 </div>
             </section>
-        // AUTO-INJEKTOR ZA PROGRAMERSKO TESTIRANJE SVEOBUHVATNOSTI SISTEMA
-        function injektujSveobuhvatneDemoPodatke() {
-            bolnicaDB = [
-                {
-                    id: "Z-2026/412", ime: "Petar", prezime: "Petrović", jmbg: "2306985710023", tel: "034/711-222", smestaj: "Stacionarno", uputnaDg: "G54.1 Plexopathy lumbosacralis",
-                    kuhSoba: "Odeljenje A, Soba 102 (Krevet 1)", kuhDijeta: "Neslana / Kardiološka dijeta", kuhAlergije: "Nema",
-                    uputLekar: "Ordinacija 1 - Prvi pregled fizijatra", uputHitnost: "Post-traumatska rehabilitacija", globalStatus: "Otpušten",
-                    tipPosete: "Prvi pregled", dgKod: "M54.1 Radiculopathia L5-S1", anamneza: "Pacijent se žali na oštar bol u donjem delu leđa koji se širi niz spoljašnju stranu leve noge do palca. Tegobe traju 3 meseca nakon podizanja tereta.",
-                    lokalni: "Lako brisana lumbalna lordoza, paravertebralna muskulatura u hipertonusu, bolna palpacija spinoznih nastavaka L4-S1.", rom: "Lasegue pozitivan na 40 stepeni sa leve strane. Pokreti u kuku očuvani.", mmt: "Dorsifleksija stopala leva 4/5, desna 5/5.", refleksi: "Ahilov refleks levo ugašen.", antropometrija: "Obim natkolenice 15cm iznad patele: desno 48cm, levo 46cm (hipotrofija).",
-                    planTerapija: [
-                        { naziv: "Kineziterapija (Individualne korektivne vežbe)", seanse: 10 },
-                        { naziv: "Elektroterapija (Interferentne struje - IFS)", seanse: 10 },
-                        { naziv: "Magnetoterapija (Visokointenzivni Salus Talent)", seanse: 5 }
-                    ],
-                    emngUputnaInd: "Sumnja na radikulopatiju L5", emngAparat: "MedCore NeuroScan Expert v4", emngNcs: "Brzina provodljivosti za n. peroneus sin iznosi 41 m/s sa redukcijom amplituda motornog odgovora.", emngEmg: "U m. tibialis anterior sin uočavaju se spontane denervacione aktivnosti (fibrilacije i pozitivni oštri talasi) u miru.", emngZakljucak: "Nalaz ukazuje na umereno tešku, hroničnu radikulopatiju korena L5 sa leve strane u fazi parcijalne denervacije.",
-                    matricaPrisustva: {
-                        "Kineziterapija (Individualne korektivne vežbe)": ["done", "done", "done", "done", "done", "excused", "done", "done", "done", "done"],
-                        "Elektroterapija (Interferentne struje - IFS)": ["done", "done", "done", "done", "done", "unexcused", "done", "done", "done", "done"],
-                        "Magnetoterapija (Visokointenzivni Salus Talent)": ["done", "done", "done", "done", "done"]
-                    },
-                    bModelFond: "Participacija", bTrosakSmestaj: 15000, bTrosakPregledi: 0, bPlaceno: true,
-                    oIshod: "Značajno funkcionalno poboljšanje statusa", oZavrsniStatus: "Lasegue negativan, MMT ekstenzora palca 5/5, obim leve natkolenice 47.5cm.", oPreporuka: "Nastavak naučenih zaštitnih položaja. Izbegavati fleksiju trupa pod teretom. Kontrola za 6 meseci sa novim nalazom."
-                }
-            ];
-            dbCommit();
-            activePatientId = "Z-2026/412";
-            routeTo('pult');
+
+            <section id="pane-terapija" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Dnevna evidencija prisustva pacijenta na fizikalnim terapijama</h2>
+                <div style="background: #f8fafc; padding: 15px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 15px;">
+                    <p><strong>Uputstvo za terapeuta:</strong> Označite kućicu za svaki dan kada je pacijent kompletirao zakazane seanse. Podaci se automatski vezuju za istoriju bolesti.</p>
+                </div>
+
+                <div class="field-group">
+                    <label>Naziv i raspored terapijske procedure</label>
+                    <input type="text" id="att-naziv-procedure" readonly style="background: #e2e8f0; font-weight: bold;">
+                </div>
+
+                <h3 style="margin-bottom: 10px; color: var(--accent-blue);">Terapijski kontrolni kalendar (10 Dana / Seansi):</h3>
+                <div class="attendance-matrix">
+                    <div class="day-box"><span>Dan 1</span><input type="checkbox" id="check-d1" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 2</span><input type="checkbox" id="check-d2" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 3</span><input type="checkbox" id="check-d3" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 4</span><input type="checkbox" id="check-d4" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 5</span><input type="checkbox" id="check-d5" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 6</span><input type="checkbox" id="check-d6" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 7</span><input type="checkbox" id="check-d7" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 8</span><input type="checkbox" id="check-d8" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 9</span><input type="checkbox" id="check-d9" onchange="syncAttendance()"></div>
+                    <div class="day-box"><span>Dan 10</span><input type="checkbox" id="check-d10" onchange="syncAttendance()"></div>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-success" onclick="alert('Evidencija prisustva je uspešno sačuvana u lokalnoj bazi podataka.')">💾 Potvrdi i zaključaj prisustvo za danas</button>
+                </div>
+            </section>
+
+            <section id="pane-kuhinja" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Dijetetski list i mala kuhinjska karta pacijenta</h2>
+                <div class="grid-row-2">
+                    <div class="field-group">
+                        <label>Režim / Tip Ishrane (Dijeta)</label>
+                        <select id="k-dijeta">
+                            <option value="Standardna bolnička ishrana">Standardna bolnička ishrana</option>
+                            <option value="Dijabetička ishrana (Preporučeno za CMT/Metabolički sindrom)">Dijabetička ishrana (Korekcija UH)</option>
+                            <option value="Neslana dijeta (Hiposodijumska)">Neslana dijeta (Kardio-vaskularni bolesnici)</option>
+                            <option value="Kašasta / Miksirana ishrana">Kašasta / Miksirana ishrana (Teža disfagija)</option>
+                        </select>
+                    </div>
+                    <div class="field-group"><label>Alergeni u ishrani</label><input type="text" id="k-alergeni" placeholder="Npr. Kikiriki, laktoza, gluten..."></div>
+                </div>
+                <div class="field-group">
+                    <label>Posebne napomene za kuhinjski blok i osoblje restorana</label>
+                    <textarea id="k-napomena" rows="4" placeholder="Upisati režim serviranja, dodatne tečnosti, zabrane unosa masnoća..."></textarea>
+                </div>
+
+                <div style="margin-top: 10px; display: flex; gap: 8px;">
+                    <button class="btn btn-success" onclick="commitKuhinjaData()">💾 Sačuvaj dijetetski list</button>
+                    <button class="btn btn-primary" onclick="executePrint('kuhinja')">🖨️ Štampaj malu kuhinjsku kartu</button>
+                </div>
+            </section>
+
+            <section id="pane-blagajna" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Finansijska konstrukcija i Fiskalizacija</h2>
+                
+                <div style="background: #f1f5f9; padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--border-color);">
+                    <h4 style="margin-bottom: 10px; color: var(--accent-blue);">Dodaj pojedinačnu uslugu / proceduru u račun</h4>
+                    <div class="grid-row-3" style="align-items: flex-end;">
+                        <div class="field-group">
+                            <label>Usluga</label>
+                            <select id="blag-naziv">
+                                <option value="Kineziterapija za CMT (Korektivni program)">Kineziterapija za CMT (Korektivni program)</option>
+                                <option value="Elektromioneurografija (EMNG gornjih i donjih ekstremiteta)">Elektromioneurografija (EMNG komplet)</option>
+                                <option value="Specijalistički pregled dr Filipović">Specijalistički pregled dr Filipović</option>
+                                <option value="Hidroterapija sa podvodnom masažom">Hidroterapija sa podvodnom masažom</option>
+                            </select>
+                        </div>
+                        <div class="field-group"><label>Broj seansi (Kvantitet)</label><input type="number" id="blag-kol" value="10" min="1"></div>
+                        <div class="field-group"><label>Cena po seansi (RSD)</label><input type="number" id="blag-cena" value="1500" min="0"></div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="addInvoiceRow()" style="padding: 6px 12px; font-size: 11px;">➕ Dodaj stavku u obračun</button>
+                </div>
+
+                <div class="invoice-layout">
+                    <div style="flex: 1;">
+                        <table class="data-table" id="invoice-grid-table">
+                            <thead>
+                                <tr><th>Naziv medicinske usluge</th><th>Kvantitet</th><th>Cena (RSD)</th><th>Ukupno (RSD)</th><th>Ukloni</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div style="text-align: right; font-size: 16px; font-weight: bold; margin-bottom: 15px;">
+                            ZBIRNI SALDO: <span id="invoice-total-sum" style="color: var(--danger-red);">0.00</span> RSD
+                        </div>
+                        <button class="btn btn-success" onclick="executeFiscalization()">⚡ Fiskalizuj račun preko poreske uprave</button>
+                    </div>
+
+                    <div class="tape-bill" id="fiscal-tape-block" style="display: none;">
+                        <div class="center">SPECIJALNA BOLNICA MEDCORE</div>
+                        <div class="center">REPUBLIKA SRBIJA, ARANĐELOVAC</div>
+                        <div class="center">PIB: 104592810</div>
+                        <div class="center">IBFM: AM019485</div>
+                        <div class="separator"></div>
+                        <div class="center">FISKALNI RAČUN</div>
+                        <div class="separator"></div>
+                        <div id="tape-items-injected"></div>
+                        <div class="separator"></div>
+                        <div class="row-flex" style="font-weight: bold;"><span>UKUPNO ZA NAPLATU:</span><span id="t-total-price">0.00</span></div>
+                        <div class="row-flex"><span>GOTOVINA / CASH:</span><span id="t-cash">0.00</span></div>
+                        <div class="separator"></div>
+                        <div class="row-flex"><span>Porez (PDV Opšta stopa 20%):</span><span id="t-tax">0.00</span></div>
+                        <div class="separator"></div>
+                        <div id="t-meta-time"></div>
+                        <div class="separator"></div>
+                        <div class="center">[ PORESKI QR KOD SIMULACIJA ]</div>
+                        <div class="center" style="margin-top: 5px;">HVALA NA POVERENJU</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pane-otpust" class="clinical-section">
+                <h2 style="color: var(--accent-blue); margin-bottom: 15px;">Zaključavanje istorije bolesti i Otpusna lista</h2>
+                <div class="grid-row-2">
+                    <div class="field-group">
+                        <label>Ishod stacionarnog lečenja</label>
+                        <select id="otp-ishod">
+                            <option value="Sanatio completa (Potpuno izlečenje)">Sanatio completa (Potpuno izlečenje)</option>
+                            <option value="Mellioratio (Značajno poboljšanje funkcionalnog statusa)">Mellioratio (Značajno poboljšanje)</option>
+                            <option value="Status quo (Stacionarno stanje bez promena)">Status quo (Stacionarno stanje)</option>
+                        </select>
+                    </div>
+                    <div class="field-group"><label>Završni funkcionalni status lokomocije</label><input type="text" id="otp-status" placeholder="Npr. Hod samostalan, kontrakture stopala delimično korigovane."></div>
+                </div>
+                <div class="field-group">
+                    <label>Preporuke za kućne uslove, dalju habilitaciju i medikaciju</label>
+                    <textarea id="otp-preporuke" rows="6" placeholder="Unesite preporuke za nastavak vežbi, ortoze, kontrolne preglede..."></textarea>
+                </div>
+
+                <div style="margin-top: 10px; display: flex; gap: 8px;">
+                    <button class="btn btn-success" onclick="commitOtpustData()">💾 Zaključaj karton i sačuvaj otpusnu listu</button>
+                    <button class="btn btn-primary" onclick="executePrint('otpust')">🖨️ Štampaj Otpusnu listu (A4)</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="print-engine-buffer"></div>
+
+    <script>
+        // JEZGRO BAZE PODATAKA (LOCALSTORAGE INTEGRACIJA)
+        let datastore = JSON.parse(localStorage.getItem('medcore_enterprise_v9')) || [];
+        let currentPatientId = null;
+
+        function saveState() {
+            localStorage.setItem('medcore_enterprise_v9', JSON.stringify(datastore));
         }
 
-            <section id="pane-konsultant" class="clinical-section">
-                <h2 style="color: var(--accent-blue); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Konsultativni pregled i Elektromioneurografija (EMNG)</h2>
+        // RUTIRANJE TABOVA
+        function navigate(paneId) {
+            document.querySelectorAll('.clinical-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(`pane-${paneId}`).classList.add('active');
+            document.getElementById(`tab-link-${paneId}`).classList.add('active');
+
+            if(currentPatientId) {
+                hydratePatientInputs();
+            }
+        }
+
+        function toggleMinorFields(val) {
+            document.getElementById('minor-protocol-box').style.display = (val === 'Maloletni') ? 'block' : 'none';
+        }
+
+        // REGISTRACIJA
+        function executeRegistration(e) {
+            e.preventDefault();
+            const id = document.getElementById('reg-id').value.trim();
+            if(datastore.some(p => p.id === id)) return alert("Upozorenje: Broj protokola već postoji u bazi!");
+
+            const patient = {
+                id: id,
+                ime: document.getElementById('reg-ime').value.trim(),
+                prezime: document.getElementById('reg-prezime').value.trim(),
+                jmbg: document.getElementById('reg-jmbg').value.trim(),
+                starost: document.getElementById('reg-starost').value,
+                uputdg: document.getElementById('reg-uputdg').value.trim(),
                 
-                <div class="template-wrapper">
+                // Pratilac
+                pratNaziv: document.getElementById('reg-prat-naziv').value.trim(),
+                pratSrodstvo: document.getElementById('reg-prat-srodstvo').value.trim(),
+                pratJmbg: document.getElementById('reg-prat-jmbg').value.trim(),
+
+                // Klinički blokovi
+                anamneza: "", status: "", dg: "", terapijaOpis: "",
+                konsIzvestaj: "", konsEmng: "",
+                kDijeta: "Standardna bolnička ishrana", kAlergeni: "", kNapomena: "",
+                otpIshod: "Mellioratio", otpStatus: "", otpPreporuke: "",
+                
+                // Finansije i Prisustvo
+                rows: [], totalSum: 0, isFiscal: false,
+                attendance: { d1:false, d2:false, d3:false, d4:false, d5:false, d6:false, d7:false, d8:false, d9:false, d10:false }
+            };
+
+            datastore.push(patient);
+            saveState();
+            currentPatientId = id;
+            rebuildSidebar();
+            refreshFocusBanner();
+            document.getElementById('form-registration').reset();
+            alert("Karton uspešno otvoren! Pacijent prosleđen u ambulantu fizijatra.");
+            navigate('lekar');
+        }
+
+        // REBUILD KARTOTEKE
+        function rebuildSidebar() {
+            const list = document.getElementById('injected-patient-list');
+            list.innerHTML = "";
+            if(datastore.length === 0) {
+                list.innerHTML = `<p style="color:#64748b; padding:10px; font-size:11px;">Nema zavedenih pacijenata.</p>`;
+                return;
+            }
+            datastore.forEach(p => {
+                const row = document.createElement('div');
+                row.className = `patient-row ${p.id === currentPatientId ? 'active' : ''}`;
+                row.onclick = () => {
+                    currentPatientId = p.id;
+                    rebuildSidebar();
+                    refreshFocusBanner();
+                    hydratePatientInputs();
+                };
+                row.innerHTML = `
+                    <div class="name">${p.ime} ${p.prezime}</div>
+                    <div class="meta">Prot: ${p.id} | JMBG: ${p.jmbg}</div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function refreshFocusBanner() {
+            const banner = document.getElementById('focus-banner-patient');
+            if(!currentPatientId) {
+                banner.innerHTML = `<div><strong>SISTEM UKLJUČEN:</strong> Izaberite pacijenta iz leve kolone ili kreirajte novi karton na šalteru.</div>`;
+                return;
+            }
+            const p = datastore.find(x => x.id === currentPatientId);
+            let pratInfo = p.starost === 'Maloletni' ? ` | 🧑‍👦 Staratelj: ${p.pratNaziv} (${p.pratSrodstvo})` : ' | Punoletno lice';
+            banner.innerHTML = `<div>🏥 <strong>[AKTIVAN PROTOKOL: ${p.id}]</strong> Pacijent: <strong>${p.ime} ${p.prezime}</strong> ${pratInfo}</div>`;
+        }
+
+        // POPUNJAVANJE INPUTA IZ BAZE
+        function hydratePatientInputs() {
+            const p = datastore.find(x => x.id === currentPatientId);
+            if(!p) return;
+
+            // Lekar
+            document.getElementById('md-anamneza').value = p.anamneza || "";
+            document.getElementById('md-status').value = p.status || "";
+            document.getElementById('md-dg').value = p.dg || "";
+            document.getElementById('md-terapija-opis').value = p.terapijaOpis || "";
+
+            // Konsultant
+            document.getElementById('kons-izvestaj').value = p.konsIzvestaj || "";
+            document.getElementById('kons-emng').value = p.konsEmng || "";
+
+            // Terapija
+            document.getElementById('att-naziv-procedure').value = p.terapijaOpis || "Nije ordinirana terapija na nalazu";
+            document.getElementById('check-d1').checked = p.attendance.d1 || false;
+            document.getElementById('check-d2').checked = p.attendance.d2 || false;
+            document.getElementById('check-d3').checked = p.attendance.d3 || false;
+            document.getElementById('check-d4').checked = p.attendance.d4 || false;
+            document.getElementById('check-d5').checked = p.attendance.d5 || false;
+            document.getElementById('check-d6').checked = p.attendance.d6 || false;
+            document.getElementById('check-d7').checked = p.attendance.d7 || false;
+            document.getElementById('check-d8').checked = p.attendance.d8 || false;
+            document.getElementById('check-d9').checked = p.attendance.d9 || false;
+            document.getElementById('check-d10').checked = p.attendance.d10 || false;
+
+            // Kuhinja
+            document.getElementById('k-dijeta').value = p.kDijeta || "Standardna bolnička ishrana";
+            document.getElementById('k-alergeni').value = p.kAlergeni || "";
+            document.getElementById('k-napomena').value = p.kNapomena || "";
+
+            // Blagajna
+            renderInvoiceGrid();
+
+            // Otpust
+            document.getElementById('otp-ishod').value = p.otpIshod || "Mellioratio";
+            document.getElementById('otp-status').value = p.otpStatus || "";
+            document.getElementById('otp-preporuke').value = p.otpPreporuke || "";
+        }
+
+        // ČUVANJE PODATAKA IZ POJEDINAČNIH MODULA
+        function commitLekarData() {
+            if(!currentPatientId) return alert("Izaberite pacijenta!");
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.anamneza = document.getElementById('md-anamneza').value.trim();
+            p.status = document.getElementById('md-status').value.trim();
+            p.dg = document.getElementById('md-dg').value.trim();
+            p.terapijaOpis = document.getElementById('md-terapija-opis').value.trim();
+            saveState();
+            alert("Nalaz lekara fizijatra uspešno verifikovan i digitalno potpisan!");
+        }
+
+        function commitKonsultantData() {
+            if(!currentPatientId) return alert("Izaberite pacijenta!");
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.konsIzvestaj = document.getElementById('kons-izvestaj').value.trim();
+            p.konsEmng = document.getElementById('kons-emng').value.trim();
+            saveState();
+            alert("Konsultativni EMNG izveštaj uspešno spojen sa kartonom pacijenta!");
+        }
+
+        function syncAttendance() {
+            if(!currentPatientId) return;
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.attendance.d1 = document.getElementById('check-d1').checked;
+            p.attendance.d2 = document.getElementById('check-d2').checked;
+            p.attendance.d3 = document.getElementById('check-d3').checked;
+            p.attendance.d4 = document.getElementById('check-d4').checked;
+            p.attendance.d5 = document.getElementById('check-d5').checked;
+            p.attendance.d6 = document.getElementById('check-d6').checked;
+            p.attendance.d7 = document.getElementById('check-d7').checked;
+            p.attendance.d8 = document.getElementById('check-d8').checked;
+            p.attendance.d9 = document.getElementById('check-d9').checked;
+            p.attendance.d10 = document.getElementById('check-d10').checked;
+            saveState();
+        }
+
+        function commitKuhinjaData() {
+            if(!currentPatientId) return alert("Izaberite pacijenta!");
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.kDijeta = document.getElementById('k-dijeta').value;
+            p.kAlergeni = document.getElementById('k-alergeni').value.trim();
+            p.kNapomena = document.getElementById('k-napomena').value.trim();
+            saveState();
+            alert("Dijetetski list sačuvan. Kuhinjska karta je spremna za štampu.");
+        }
+
+        function commitOtpustData() {
+            if(!currentPatientId) return alert("Izaberite pacijenta!");
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.otpIshod = document.getElementById('otp-ishod').value;
+            p.otpStatus = document.getElementById('otp-status').value.trim();
+            p.otpPreporuke = document.getElementById('otp-preporuke').value.trim();
+            saveState();
+            alert("Istorija bolesti zaključana! Otpusna lista spremna.");
+        }
+
+        // BLAGAJNA LOGIKA
+        function addInvoiceRow() {
+            if(!currentPatientId) return alert("Izaberite pacijenta.");
+            const p = datastore.find(x => x.id === currentPatientId);
+
+            const naziv = document.getElementById('blag-naziv').value;
+            const kol = parseInt(document.getElementById('blag-kol').value) || 1;
+            const cena = parseFloat(document.getElementById('blag-cena').value) || 0;
+            const suma = kol * cena;
+
+            p.rows.push({ naziv: naziv, kol: kol, cena: cena, suma: suma });
+            saveState();
+            renderInvoiceGrid();
+        }
+
+        function renderInvoiceGrid() {
+            const tbody = document.querySelector('#invoice-grid-table tbody');
+            tbody.innerHTML = "";
+            const p = datastore.find(x => x.id === currentPatientId);
+            if(!p) return;
+
+            let total = 0;
+            p.rows.forEach((row, idx) => {
+                total += row.suma;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${row.naziv}</strong></td>
+                    <td>${row.kol}</td>
+                    <td>${row.cena.toFixed(2)}</td>
+                    <td><strong>${row.suma.toFixed(2)}</strong></td>
+                    <td><button class="btn btn-danger" style="padding:2px 6px; font-size:10px;" onclick="removeInvoiceRow(${idx})">🗑️</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            p.totalSum = total;
+            document.getElementById('invoice-total-sum').innerText = total.toFixed(2);
+
+            if(p.isFiscal) {
+                renderFiscalTape(p);
+            } else {
+                document.getElementById('fiscal-tape-block').style.display = 'none';
+            }
+        }
+
+        function removeInvoiceRow(idx) {
+            const p = datastore.find(x => x.id === currentPatientId);
+            p.rows.splice(idx, 1);
+            saveState();
+            renderInvoiceGrid();
+        }
+
+        function executeFiscalization() {
+            const p = datastore.find(x => x.id === currentPatientId);
+            if(!p || p.rows.length === 0) return alert("Nema stavki za fiskalizaciju.");
+            p.isFiscal = true;
+            saveState();
+            renderFiscalTape(p);
+            alert("Račun uspešno fiskalizovan i prosleđen serveru Poreske Uprave.");
+        }
+
+        function renderFiscalTape(p) {
+            const tape = document.getElementById('fiscal-tape-block');
+            const items = document.getElementById('tape-items-injected');
+            items.innerHTML = "";
+
+            p.rows.forEach(r => {
+                items.innerHTML += `
+                    <div class="row-flex"><span>${r.naziv.substring(0,24)}</span></div>
+                    <div class="row-flex"><span>  ${r.kol} x ${r.cena.toFixed(2)}</span><span>${r.suma.toFixed(2)} Ђ</span></div>
+                `;
+            });
+
+            document.getElementById('t-total-price').innerText = p.totalSum.toFixed(2);
+            document.getElementById('t-cash').innerText = p.totalSum.toFixed(2);
+            document.getElementById('t-tax').innerText = (p.totalSum * 0.20).toFixed(2);
+            document.getElementById('t-meta-time').innerHTML = `
+                <div>ID Računa: REC-${p.id}-2026</div>
+                <div>Datum i vreme: 24.06.2026. 09:40:12</div>
+            `;
+            tape.style.display = 'block';
+        }
+
+        // KLINIČKI INTEGRISANI ŠABLONI (OPŠIRNI MED.
                     <div class="template-heading">Specijalistički neurološki i elekt
-        // INICIJALNO POKRETANJE SISTEMA
-        routeTo('pult');
-    </script>
-</body>
-</html>
